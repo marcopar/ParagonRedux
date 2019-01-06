@@ -1,0 +1,23 @@
+[bootstrap]
+main_collection = /main/main.collectionc
+render = /rendercam/rendercam.renderc
+
+[script]
+shared_state = 1
+
+[display]
+width = 960
+height = 540
+high_dpi = 1
+
+[project]
+title = Paragon Redux
+dependencies = https://github.com/rgrams/rendercam/archive/v1.0.zip
+bundle_resources = 
+
+[sprite]
+max_count = 256
+
+[sound]
+max_sound_instances = 256
+

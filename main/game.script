@@ -1,0 +1,100 @@
+local C = require "main.constants"
+local U = require "main.utils"
+local M = require "main.match"
+local S = require "main.storage"
+
+local inputEnabled = true
+
+function init(self)	
+	msg.post(".", "acquire_input_focus")
+	math.randomseed(os.time())
+	math.random()
+	math.random()
+	math.random()
+
+	M.newMatch()
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+local function freezeGlyphCompletedP2() 
+	print("freeze completed for player 2")
+	M.newGlyph(C.PLAYER2)
+	checkMatchingGlyph(C.PLAYER2)
+end
+
+local function freezeGlyphCompletedP1()
+	print("freeze completed for player 1") 
+	M.newGlyph(C.PLAYER1)
+	checkMatchingGlyph(C.PLAYER1)
+end
+
+function checkMatchingGlyph(player, callback)
+	print("check matching for player " .. player)
+	local glyph = M.getPlayers().getGlyph(player)
+	local match = M.getBoard().checkMatchingGlyph(player, glyph)
+	if(match ~= nil) then
+		M.getBoard().freezeGlyph(match, glyph, callback)
+	else
+		inputEnabled = true
+	end
+end
+
+function checkMatchingGlyphs()
+	print("check matching")
+	inputEnabled = false
+	checkMatchingGlyph(C.PLAYER1, freezeGlyphCompletedP1)
+	checkMatchingGlyph(C.PLAYER2, freezeGlyphCompletedP2)
+end
+
+local function swapCompleted() 
+	print("swap completed")
+	checkMatchingGlyphs()
+end
+
+local function swapBoard()
+	print("swap")
+	inputEnabled = false
+	M.getBoard().swapBoard(swapCompleted)
+end
+
+function on_input(self, action_id, action)
+	if(inputEnabled == false) then
+		return
+	end
+	if action_id == hash("touch") and action.pressed then		
+		local pos = U.getWorldPos(action)
+		local tile = U.getTile(pos)
+		if(M.getBoard().isOnBoard(tile)) then
+			local cell = M.getBoard().getCell(tile)
+			if(cell == nil) then
+				currentPlayer = M.getNextPlayer()
+				print("==== ORB PLACED player " .. currentPlayer)
+				M.getBoard().setCell(tile, currentPlayer)
+				checkMatchingGlyphs()			
+				if(M.isSwapTriggered()) then
+					swapBoard()
+				end			
+			end
+		end	
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end
+

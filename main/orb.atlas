@@ -1,0 +1,12 @@
+images {
+  image: "/assets/blue_orb.png"
+}
+images {
+  image: "/assets/red_orb.png"
+}
+images {
+  image: "/assets/white_orb.png"
+}
+margin: 0
+extrude_borders: 0
+inner_padding: 0
