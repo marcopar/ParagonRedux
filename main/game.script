@@ -10,6 +10,7 @@ local checkingGlyphOngoing = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
+	-- randomize and discard the first values as they may be always the same
 	math.randomseed(os.time())
 	math.random()
 	math.random()
@@ -19,11 +20,12 @@ function init(self)
 end
 
 function final(self)
-	-- Add finalization code here
-	-- Remove this function if not needed
+	-- cleanup
+	FLOW.stop()
 end
 
 function update(self, dt)
+	-- keep the flows going
 	FLOW.update(dt)
 end
 
@@ -32,18 +34,22 @@ function on_message(self, message_id, message, sender)
 	-- Remove this function if not needed
 end
 
-local function freezeGlyphCompletedP2() 
-	print("freeze completed for player 2")
+-- callback after freezing a glyph
+local function freezeGlyphCompletedP2()
+	-- recheck for other matches, can happen after a board swapBoard
+	-- pass back true so we will generate a new glyph
 	checkMatchingGlyph(C.PLAYER2, true)
 end
 
+-- callback after freezing a glyph
 local function freezeGlyphCompletedP1()
-	print("freeze completed for player 1") 
-	M.newGlyph(C.PLAYER1)
+	-- recheck for other matches, can happen after a board swapBoard
+	-- pass back true so we will generate a new glyph
 	checkMatchingGlyph(C.PLAYER1, true)
 end
 
-function getFreezeCompletedCallback(player)
+-- returns the callback for the given player
+function getFreezeGlyphCompletedCallback(player)
 	if(player == C.PLAYER1) then
 		return freezeGlyphCompletedP1
 	elseif(player == C.PLAYER2) then
@@ -51,6 +57,8 @@ function getFreezeCompletedCallback(player)
 	end
 end
 
+-- check for a match for the given player
+-- anyFound is set after finding a match in the freeze completed callback
 function checkMatchingGlyph(player, anyFound)
 	print("check matching for player " .. player)
 	inputEnabled = false
@@ -58,7 +66,8 @@ function checkMatchingGlyph(player, anyFound)
 	local glyph = M.getPlayers().getGlyph(player)
 	local match = M.getBoard().checkMatchingGlyph(player, glyph)
 	if(match ~= nil) then
-		M.getBoard().freezeGlyph(match, glyph, getFreezeCompletedCallback(player))
+		-- freeze the match on the board
+		M.getBoard().freezeGlyph(match, glyph, getFreezeGlyphCompletedCallback(player))
 	else
 		if(anyFound) then
 			M.newGlyph(player)
@@ -72,8 +81,10 @@ function isCheckingGLyphCompleted()
 	return not checkingGlyphOngoing
 end
 
+--check for a match for both players
 function checkMatchingGlyphs()
 	print("check matching")
+	-- execute the checks one after the other and not in paralles as it would happen without using FLOW
 	FLOW.start(function()
 		checkMatchingGlyph(C.PLAYER1)
 		FLOW.until_true(isCheckingGLyphCompleted)
@@ -81,11 +92,13 @@ function checkMatchingGlyphs()
 	end)
 end
 
+-- callback for the swap board
 local function swapCompleted() 
 	print("swap completed")
 	checkMatchingGlyphs()
 end
 
+--swap the board
 local function swapBoard()
 	print("swap")
 	inputEnabled = false
