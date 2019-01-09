@@ -3,7 +3,10 @@ local U = require "main.utils"
 local M = require "main.match"
 local S = require "main.storage"
 
+local FLOW = require "ludobits.m.flow"
+
 local inputEnabled = true
+local checkingGlyphOngoing = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
@@ -21,8 +24,7 @@ function final(self)
 end
 
 function update(self, dt)
-	-- Add update code here
-	-- Remove this function if not needed
+	FLOW.update(dt)
 end
 
 function on_message(self, message_id, message, sender)
@@ -32,32 +34,51 @@ end
 
 local function freezeGlyphCompletedP2() 
 	print("freeze completed for player 2")
-	M.newGlyph(C.PLAYER2)
-	checkMatchingGlyph(C.PLAYER2)
+	checkMatchingGlyph(C.PLAYER2, true)
 end
 
 local function freezeGlyphCompletedP1()
 	print("freeze completed for player 1") 
 	M.newGlyph(C.PLAYER1)
-	checkMatchingGlyph(C.PLAYER1)
+	checkMatchingGlyph(C.PLAYER1, true)
 end
 
-function checkMatchingGlyph(player, callback)
+function getFreezeCompletedCallback(player)
+	if(player == C.PLAYER1) then
+		return freezeGlyphCompletedP1
+	elseif(player == C.PLAYER2) then
+		return freezeGlyphCompletedP2
+	end
+end
+
+function checkMatchingGlyph(player, anyFound)
 	print("check matching for player " .. player)
+	inputEnabled = false
+	checkingGlyphOngoing = true
 	local glyph = M.getPlayers().getGlyph(player)
 	local match = M.getBoard().checkMatchingGlyph(player, glyph)
 	if(match ~= nil) then
-		M.getBoard().freezeGlyph(match, glyph, callback)
+		M.getBoard().freezeGlyph(match, glyph, getFreezeCompletedCallback(player))
 	else
+		if(anyFound) then
+			M.newGlyph(player)
+		end
 		inputEnabled = true
+		checkingGlyphOngoing = false
 	end
+end
+
+function isCheckingGLyphCompleted()
+	return not checkingGlyphOngoing
 end
 
 function checkMatchingGlyphs()
 	print("check matching")
-	inputEnabled = false
-	checkMatchingGlyph(C.PLAYER1, freezeGlyphCompletedP1)
-	checkMatchingGlyph(C.PLAYER2, freezeGlyphCompletedP2)
+	FLOW.start(function()
+		checkMatchingGlyph(C.PLAYER1)
+		FLOW.until_true(isCheckingGLyphCompleted)
+		checkMatchingGlyph(C.PLAYER2)
+	end)
 end
 
 local function swapCompleted() 
@@ -84,7 +105,7 @@ function on_input(self, action_id, action)
 				currentPlayer = M.getNextPlayer()
 				print("==== ORB PLACED player " .. currentPlayer)
 				M.getBoard().setCell(tile, currentPlayer)
-				checkMatchingGlyphs()			
+				checkMatchingGlyph(currentPlayer)			
 				if(M.isSwapTriggered()) then
 					swapBoard()
 				end			
