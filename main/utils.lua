@@ -16,10 +16,18 @@ M.getTileCenterPosition = function(tile)
 	return vmath.vector3(orbX, orbY, 1)		
 end
 
-M.createOrb = function(tile, orbType)
+M.createOrb = function(tile, orbType, time, easing)
 	local orbPos = M.getTileCenterPosition(tile)
 	local orb = factory.create("#orb_factory", orbPos, nil, nil)
 	sprite.play_flipbook(orb, C.ORBS[orbType])
+	if(time ~= nil) then
+		if(easing == nil) then
+			easing = go.EASING_OUTELASTIC
+		end
+		print(time .. "   " .. easing)
+		go.set_scale(0.01)
+		go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 1, easing, time, 0)
+	end
 	return orb
 end
 
@@ -27,7 +35,7 @@ local function anim_changeOrbType_end(self, orb, property)
 	local orbType = S.get(S.url2key(orb) .. "orbType")
 	local callback = S.get(S.url2key(orb) .. "callback")
 	sprite.play_flipbook(orb, C.ORBS[orbType])
-	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTELASTIC, 0.3, 0, callback)
+	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTELASTIC, 0.5, 0, callback)
 end
 
 M.changeOrbType = function(orb, orbType, delay, callback)

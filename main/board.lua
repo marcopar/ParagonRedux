@@ -18,7 +18,7 @@ M.isOnBoard =  function(tile)
 end
 
 M.setCell = function(tile, player)
-	local orb = U.createOrb(tile, player)
+	local orb = U.createOrb(tile, player, 0.5)
 	local cellPos = M.getCellIndexInBoard(tile)
 	board.sprites[cellPos] = orb
 	board.values[cellPos] = player
