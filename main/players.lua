@@ -25,7 +25,7 @@ M.setGlyph = function(player, glyph)
 		U.deleteOrb(players[player].sprites[i])
 		players[player].sprites[i] = nil
 		if(glyph[i] == 1) then
-			players[player].sprites[i] = U.createOrb(tile, player)
+			players[player].sprites[i] = U.createOrb(tile, player, 0.5)
 		end
 	end
 	players[player].glyph = glyph

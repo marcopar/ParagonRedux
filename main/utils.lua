@@ -17,6 +17,7 @@ M.getTileCenterPosition = function(tile)
 end
 
 M.createOrb = function(tile, orbType, time, easing)
+	print(tostring(tile) .. " " .. tostring(orbType) .. " " .. tostring(time) .. "   " .. tostring(easing))
 	local orbPos = M.getTileCenterPosition(tile)
 	local orb = factory.create("#orb_factory", orbPos, nil, nil)
 	sprite.play_flipbook(orb, C.ORBS[orbType])
@@ -24,8 +25,8 @@ M.createOrb = function(tile, orbType, time, easing)
 		if(easing == nil) then
 			easing = go.EASING_OUTELASTIC
 		end
-		print(time .. "   " .. easing)
-		go.set_scale(0.01)
+		print(time .. " " .. easing)
+		go.set_scale(0.01, orb)
 		go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 1, easing, time, 0)
 	end
 	return orb
