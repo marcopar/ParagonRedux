@@ -36,6 +36,7 @@ end
 
 -- callback after freezing a glyph
 local function freezeGlyphCompletedP2()
+	print("2 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
 	checkMatchingGlyph(C.PLAYER2, true)
@@ -43,13 +44,14 @@ end
 
 -- callback after freezing a glyph
 local function freezeGlyphCompletedP1()
+	print("1 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
 	checkMatchingGlyph(C.PLAYER1, true)
 end
 
 -- returns the callback for the given player
-function getFreezeGlyphCompletedCallback(player)
+local function getFreezeGlyphCompletedCallback(player)
 	if(player == C.PLAYER1) then
 		return freezeGlyphCompletedP1
 	elseif(player == C.PLAYER2) then
@@ -60,30 +62,34 @@ end
 -- check for a match for the given player
 -- anyFound is set after finding a match in the freeze completed callback
 function checkMatchingGlyph(player, anyFound)
-	print("check matching for player " .. player)
+	print(player .. " check match")
 	inputEnabled = false
 	checkingGlyphOngoing = true
 	local glyph = M.getPlayers().getGlyph(player)
 	local match = M.getBoard().checkMatchingGlyph(player, glyph)
 	if(match ~= nil) then
 		-- freeze the match on the board
+		print(player .. " match found")
 		M.getBoard().freezeGlyph(match, glyph, getFreezeGlyphCompletedCallback(player))
 	else
+		print(player .. " match not found")
 		if(anyFound) then
+			print(player .. " generate new glyph")
 			M.newGlyph(player)
+			checkMatchingGlyph(player, false)
 		end
 		inputEnabled = true
 		checkingGlyphOngoing = false
 	end
 end
 
-function isCheckingGLyphCompleted()
+local function isCheckingGLyphCompleted()
 	return not checkingGlyphOngoing
 end
 
 --check for a match for both players
-function checkMatchingGlyphs()
-	print("check matching")
+local function checkMatchingGlyphs()
+	print("1-2 check match")
 	-- execute the checks one after the other and not in paralles as it would happen without using FLOW
 	FLOW.start(function()
 		checkMatchingGlyph(C.PLAYER1)
@@ -115,8 +121,9 @@ function on_input(self, action_id, action)
 		if(M.getBoard().isOnBoard(tile)) then
 			local cell = M.getBoard().getCell(tile)
 			if(cell == nil) then
+				-- empty cell
 				currentPlayer = M.getNextPlayer()
-				print("==== ORB PLACED player " .. currentPlayer)
+				print(currentPlayer .. " orb placed")
 				M.getBoard().setCell(tile, currentPlayer)
 				checkMatchingGlyph(currentPlayer)			
 				if(M.isSwapTriggered()) then
