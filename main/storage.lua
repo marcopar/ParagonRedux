@@ -15,4 +15,12 @@ M.get = function(key)
 	return value
 end
 
+M.remove = function(key)
+	storage[key] = nil
+end
+
+M.clear = function(key)
+	storage = {}
+end
+
 return M

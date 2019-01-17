@@ -2,6 +2,7 @@ local M = {}
 
 local C = require "main.constants"
 local U = require "main.utils"
+local S = require "main.storage"
 
 local board = {sprites={}, values={}}
 
@@ -97,6 +98,7 @@ M.clearBoard = function()
 			M.clearCell(tile)
 		end
 	end
+	S.clear()
 end
 
 M.getOrbCount = function()
@@ -156,7 +158,7 @@ M.checkMatchingGlyph = function(player, glyph)
 end
 
 M.freezeGlyph = function(origin, glyph, endCallback)
-	local delay = 0
+	local delay = 1
 	for x = 1, C.GLYPH_W do
 		for y = 1, C.GLYPH_H do
 			local tx = origin.x + (x - 1)
