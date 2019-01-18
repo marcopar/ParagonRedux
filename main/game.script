@@ -139,7 +139,8 @@ function checkAndSwapFlow()
 	if(M.isSwapTriggered()) then
 		swapBoard()
 		FLOW.until_true(isSwapCompleted)
-		checkMatchingGlyphs()	
+		checkMatchingGlyphs()
+		FLOW.until_true(checkingGlyphsCompleted)
 	end
 end
 
