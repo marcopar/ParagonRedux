@@ -6,8 +6,8 @@ render = /rendercam/rendercam.renderc
 shared_state = 1
 
 [display]
-width = 960
-height = 540
+width = 540
+height = 960
 high_dpi = 1
 
 [project]

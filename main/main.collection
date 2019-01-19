@@ -22,7 +22,7 @@ instances {
     }
     properties {
       id: "aspectRatio"
-      value: "16.0, 9.0, 0.0"
+      value: "9.0, 16.0, 0.0"
       type: PROPERTY_TYPE_VECTOR3
     }
     properties {
@@ -32,7 +32,7 @@ instances {
     }
     properties {
       id: "viewArea"
-      value: "1920.0, 1080.0, 0.0"
+      value: "1080.0, 1920.0, 0.0"
       type: PROPERTY_TYPE_VECTOR3
     }
   }

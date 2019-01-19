@@ -7,6 +7,7 @@ local S = require "main.storage"
 M.getTile = function(pos)
 	local tx = math.floor(pos.x / C.TILE_W) + 1
 	local ty = math.floor(pos.y / C.TILE_H) + 1
+	print("####################### " ..tx .. ", " .. ty)
 	return vmath.vector3(tx, ty, 0)
 end
 
