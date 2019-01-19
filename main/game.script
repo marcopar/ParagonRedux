@@ -8,6 +8,7 @@ local FLOW = require "ludobits.m.flow"
 local checkingSingleGlyph = false
 local swapping = false
 local checkingGlyphs = false
+local inputDisabled = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
@@ -126,7 +127,7 @@ local function swapBoard()
 end
 
 function isInputDisabled()
-	return checkingGlyphs or swapping
+	return inputDisabled
 end
 
 function checkingGlyphsCompleted()
@@ -142,6 +143,7 @@ function checkAndSwapFlow()
 		checkMatchingGlyphs()
 		FLOW.until_true(checkingGlyphsCompleted)
 	end
+	inputDisabled = false
 end
 
 function on_input(self, action_id, action)
@@ -149,6 +151,7 @@ function on_input(self, action_id, action)
 		if(isInputDisabled()) then
 			return
 		end
+		inputDisabled = true
 		local pos = U.getWorldPos(action)
 		local tile = U.getTile(pos)
 		if(M.getBoard().isOnBoard(tile)) then
@@ -158,8 +161,13 @@ function on_input(self, action_id, action)
 				currentPlayer = M.getNextPlayer()
 				log(currentPlayer .. " orb placed")
 				M.getBoard().setCell(tile, currentPlayer)
+				-- input reenabled inside the flow
 				FLOW.start(checkAndSwapFlow)
+			else
+				inputDisabled = false
 			end
+		else
+			inputDisabled = false
 		end
 	end
 end
