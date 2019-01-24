@@ -1,44 +1,44 @@
 local M = {}
 
-local C = require "main.constants"
-local B = require "main.board"
-local G = require "main.glyphs"
-local P = require "main.players"
+local CO = require "main.constants"
+local BO = require "main.board"
+local GL = require "main.glyphs"
+local PL = require "main.players"
 
-local currentPlayer = C.PLAYER2
+local currentPlayer = CO.PLAYER2
 local swapEvery = 20
 local lastSwapAt = 0
 
 
 M.newGlyph = function(player)
-	P.setGlyph(player, G.getRandomGlyph())
+	PL.setGlyph(player, GL.getRandomGlyph())
 end
 
 M.newMatch = function()
-	B.clearBoard()
-	M.newGlyph(C.PLAYER1)
-	M.newGlyph(C.PLAYER2)
+	BO.clearBoard()
+	M.newGlyph(CO.PLAYER1)
+	M.newGlyph(CO.PLAYER2)
 end
 
 M.getNextPlayer = function()
-	if(currentPlayer == C.PLAYER1) then
-		currentPlayer =  C.PLAYER2
+	if(currentPlayer == CO.PLAYER1) then
+		currentPlayer =  CO.PLAYER2
 	else
-		currentPlayer =  C.PLAYER1
+		currentPlayer =  CO.PLAYER1
 	end
 	return currentPlayer
 end
 
 M.getBoard = function()
-	return B
+	return BO
 end
 
 M.getPlayers = function()
-	return P
+	return PL
 end
 
 M.isSwapTriggered = function()
-	local orbCount = B.getOrbCount().total
+	local orbCount = BO.getOrbCount().total
 	return (swapEvery > 0 and lastSwapAt ~= orbCount and orbCount % swapEvery == 0)
 end
 

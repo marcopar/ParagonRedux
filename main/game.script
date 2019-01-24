@@ -1,9 +1,9 @@
-local C = require "main.constants"
-local U = require "main.utils"
-local M = require "main.match"
-local S = require "main.storage"
+local CO = require "main.constants"
+local UT = require "main.utils"
+local MA = require "main.match"
+local ST = require "main.storage"
 
-local FLOW = require "ludobits.m.flow"
+local FL = require "ludobits.m.flow"
 
 local checkingSingleGlyph = false
 local swapping = false
@@ -12,23 +12,24 @@ local inputDisabled = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
+	msg.post("#", "show_first_screen")
 	-- randomize and discard the first values as they may be always the same
 	math.randomseed(os.time())
 	math.random()
 	math.random()
 	math.random()
 
-	M.newMatch()
+	MA.newMatch()
 end
 
 function final(self)
 	-- cleanup
-	FLOW.stop()
+	FL.stop()
 end
 
 function update(self, dt)
 	-- keep the flows going
-	FLOW.update(dt)
+	FL.update(dt)
 end
 
 function on_message(self, message_id, message, sender)
@@ -45,7 +46,7 @@ local function freezeGlyphCompletedP2()
 	log("2 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
-	checkMatchingGlyph(C.PLAYER2, true)
+	checkMatchingGlyph(CO.PLAYER2, true)
 end
 
 -- callback after freezing a glyph
@@ -53,14 +54,14 @@ local function freezeGlyphCompletedP1()
 	log("1 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
-	checkMatchingGlyph(C.PLAYER1, true)
+	checkMatchingGlyph(CO.PLAYER1, true)
 end
 
 -- returns the callback for the given player
 local function getFreezeGlyphCompletedCallback(player)
-	if(player == C.PLAYER1) then
+	if(player == CO.PLAYER1) then
 		return freezeGlyphCompletedP1
-	elseif(player == C.PLAYER2) then
+	elseif(player == CO.PLAYER2) then
 		return freezeGlyphCompletedP2
 	end
 end
@@ -70,17 +71,17 @@ end
 function checkMatchingGlyph(player, anyFound)
 	log(player .. " check match")
 	checkingSingleGlyph = true
-	local glyph = M.getPlayers().getGlyph(player)
-	local match = M.getBoard().checkMatchingGlyph(player, glyph)
+	local glyph = MA.getPlayers().getGlyph(player)
+	local match = MA.getBoard().checkMatchingGlyph(player, glyph)
 	if(match ~= nil) then
 		-- freeze the match on the board
 		log(player .. " MATCH FOUND")
-		M.getBoard().freezeGlyph(match, glyph, getFreezeGlyphCompletedCallback(player))
+		MA.getBoard().freezeGlyph(match, glyph, getFreezeGlyphCompletedCallback(player))
 	else
 		log(player .. " match not found")
 		if(anyFound) then
 			log(player .. " NEW GLYPH")
-			M.newGlyph(player)
+			MA.newGlyph(player)
 			-- recheck
 			checkMatchingGlyph(player, false)
 		else
@@ -99,11 +100,11 @@ local function checkMatchingGlyphs()
 	checkingGlyphs = true
 	log("1-2 check match")
 	-- execute the checks one after the other and not in paralles as it would happen without using FLOW
-	FLOW.start(function()
-		checkMatchingGlyph(C.PLAYER1)
-		FLOW.until_true(isCheckingSingleGlyphOngoing)
-		checkMatchingGlyph(C.PLAYER2)
-		FLOW.until_true(isCheckingSingleGlyphOngoing)
+	FL.start(function()
+		checkMatchingGlyph(CO.PLAYER1)
+		FL.until_true(isCheckingSingleGlyphOngoing)
+		checkMatchingGlyph(CO.PLAYER2)
+		FL.until_true(isCheckingSingleGlyphOngoing)
 		checkingGlyphs = false
 		log("1-2 check match completed")
 	end)
@@ -123,7 +124,7 @@ end
 local function swapBoard()
 	log("SWAP --------------")
 	swapping = true
-	M.getBoard().swapBoard(swapCompleted)
+	MA.getBoard().swapBoard(swapCompleted)
 end
 
 function isInputDisabled()
@@ -136,12 +137,12 @@ end
 
 function checkAndSwapFlow()
 	checkMatchingGlyphs()
-	FLOW.until_true(checkingGlyphsCompleted)
-	if(M.isSwapTriggered()) then
+	FL.until_true(checkingGlyphsCompleted)
+	if(MA.isSwapTriggered()) then
 		swapBoard()
-		FLOW.until_true(isSwapCompleted)
+		FL.until_true(isSwapCompleted)
 		checkMatchingGlyphs()
-		FLOW.until_true(checkingGlyphsCompleted)
+		FL.until_true(checkingGlyphsCompleted)
 	end
 	inputDisabled = false
 end
@@ -152,17 +153,17 @@ function on_input(self, action_id, action)
 			return
 		end
 		inputDisabled = true
-		local pos = U.getWorldPos(action)
-		local tile = U.getTile(pos)
-		if(M.getBoard().isOnBoard(tile)) then
-			local cell = M.getBoard().getCell(tile)
+		local pos = UT.getWorldPos(action)
+		local tile = UT.getTile(pos)
+		if(MA.getBoard().isOnBoard(tile)) then
+			local cell = MA.getBoard().getCell(tile)
 			if(cell == nil) then
 				-- empty cell
-				currentPlayer = M.getNextPlayer()
+				currentPlayer = MA.getNextPlayer()
 				log(currentPlayer .. " orb placed")
-				M.getBoard().setCell(tile, currentPlayer)
+				MA.getBoard().setCell(tile, currentPlayer)
 				-- input reenabled inside the flow
-				FLOW.start(checkAndSwapFlow)
+				FL.start(checkAndSwapFlow)
 			else
 				inputDisabled = false
 			end

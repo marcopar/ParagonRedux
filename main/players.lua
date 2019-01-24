@@ -1,7 +1,7 @@
 local M = {}
 
-local C = require "main.constants"
-local U = require "main.utils"
+local CO = require "main.constants"
+local UT = require "main.utils"
 
 local players = { 
 	{ glyph={}, sprites={} }, 
@@ -11,21 +11,21 @@ local players = {
 M.setGlyph = function(player, glyph)
 	local xmin = 0
 	local ymax = 0
-	if(player == C.PLAYER1) then
-		xmin = C.PLAYER1_GRID_XMIN
-		ymax = C.PLAYER1_GRID_YMAX
-	elseif(player == C.PLAYER2) then
-		xmin = C.PLAYER2_GRID_XMIN
-		ymax = C.PLAYER2_GRID_YMAX
+	if(player == CO.PLAYER1) then
+		xmin = CO.PLAYER1_GRID_XMIN
+		ymax = CO.PLAYER1_GRID_YMAX
+	elseif(player == CO.PLAYER2) then
+		xmin = CO.PLAYER2_GRID_XMIN
+		ymax = CO.PLAYER2_GRID_YMAX
 	end
-	for i = 1, C.GLYPH_W * C.GLYPH_W do
-		local x = xmin + ((i - 1) % C.GLYPH_W)
-		local y = ymax - math.floor((i-1) / C.GLYPH_H)
+	for i = 1, CO.GLYPH_W * CO.GLYPH_W do
+		local x = xmin + ((i - 1) % CO.GLYPH_W)
+		local y = ymax - math.floor((i-1) / CO.GLYPH_H)
 		local tile = vmath.vector3(x, y, 0)
-		U.deleteOrb(players[player].sprites[i])
+		UT.deleteOrb(players[player].sprites[i])
 		players[player].sprites[i] = nil
 		if(glyph[i] == 1) then
-			players[player].sprites[i] = U.createOrb(tile, player, 0.5)
+			players[player].sprites[i] = UT.createOrb(tile, player, 0.5)
 		end
 	end
 	players[player].glyph = glyph
@@ -38,7 +38,7 @@ end
 M.setCell = function(tile, player)
 	local orbPos = M.getTileCenterPosition(tile)
 	local orb = factory.create("#orb_factory", orbPos, nil, nil)
-	sprite.play_flipbook(orb, C.ORBS[player])	
+	sprite.play_flipbook(orb, CO.ORBS[player])	
 	local cellPos = M.getCellIndexInBoard(tile)
 	board.sprites[cellPos] = orb
 	board.values[cellPos] = player

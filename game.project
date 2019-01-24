@@ -1,5 +1,5 @@
 [bootstrap]
-main_collection = /main/main.collectionc
+main_collection = /main/controller.collectionc
 render = /rendercam/rendercam.renderc
 
 [script]
@@ -12,7 +12,7 @@ high_dpi = 1
 
 [project]
 title = Paragon Redux
-dependencies = https://github.com/rgrams/rendercam/archive/v1.0.zip,https://github.com/britzl/ludobits/archive/master.zip
+dependencies = https://github.com/rgrams/rendercam/archive/v1.0.zip,https://github.com/britzl/ludobits/archive/master.zip,https://github.com/britzl/monarch/archive/master.zip
 bundle_resources = 
 
 [sprite]
