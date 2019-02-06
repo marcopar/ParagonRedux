@@ -2,6 +2,7 @@ local CO = require "main.constants"
 local MO = require "monarch.monarch"
 
 function init(self)
+	msg.post(".", "acquire_input_focus")
 	msg.post("#", CO.SCREEN_GAME)
 end
 
@@ -11,7 +12,5 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash(CO.SCREEN_GAME) then
 		MO.show(hash(CO.SCREEN_GAME))
-	elseif message_id == hash(CO.SCREEN_SETTINGS) then
-		MO.show(hash(CO.SCREEN_SETTINGS))
 	end
 end

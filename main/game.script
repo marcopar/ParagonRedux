@@ -13,7 +13,7 @@ local inputDisabled = false
 function init(self)	
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "show_first_screen")
-	-- randomize and discard the first values as they may be always the same
+	-- randomize and discard the first values as they may be always be the same
 	math.randomseed(os.time())
 	math.random()
 	math.random()
@@ -33,8 +33,9 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Remove this function if not needed
+	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
+		MA.newMatch()
+	end
 end
 
 local function log(msg) 

@@ -1,4 +1,4 @@
-name: "main"
+name: "game"
 instances {
   id: "camera"
   prototype: "/rendercam/camera.go"

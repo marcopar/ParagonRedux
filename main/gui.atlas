@@ -1,6 +1,9 @@
 images {
   image: "/assets/gear.png"
 }
+images {
+  image: "/assets/back.png"
+}
 margin: 0
-extrude_borders: 0
+extrude_borders: 2
 inner_padding: 0
