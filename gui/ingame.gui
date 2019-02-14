@@ -1,11 +1,11 @@
-script: "/main/gui_ingame.gui_script"
+script: "/gui/ingame.gui_script"
 fonts {
   name: "title"
-  font: "/main/title.font"
+  font: "/gui/title.font"
 }
 textures {
   name: "gui"
-  texture: "/main/gui.atlas"
+  texture: "/gui/gui.atlas"
 }
 background_color {
   x: 0.0
