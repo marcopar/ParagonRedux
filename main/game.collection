@@ -135,7 +135,7 @@ embedded_instances {
   id: "gui"
   data: "components {\n"
   "  id: \"gui_ingame\"\n"
-  "  component: \"/main/gui_ingame.gui\"\n"
+  "  component: \"/gui/ingame.gui\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

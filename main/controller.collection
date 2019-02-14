@@ -123,7 +123,7 @@ embedded_instances {
   "embedded_components {\n"
   "  id: \"collectionproxy\"\n"
   "  type: \"collectionproxy\"\n"
-  "  data: \"collection: \\\"/main/settings.collection\\\"\\n"
+  "  data: \"collection: \\\"/gui/settings.collection\\\"\\n"
   "exclude: false\\n"
   "\"\n"
   "  position {\n"
