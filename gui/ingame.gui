@@ -1,6 +1,6 @@
 script: "/gui/ingame.gui_script"
 fonts {
-  name: "title"
+  name: "font_big"
   font: "/gui/font_big.font"
 }
 textures {
@@ -47,7 +47,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "PARAGON"
-  font: "title"
+  font: "font_big"
   id: "paragon"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
