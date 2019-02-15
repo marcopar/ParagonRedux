@@ -1,11 +1,15 @@
 script: "/gui/settings.gui_script"
 fonts {
-  name: "normal"
-  font: "/gui/normal.font"
+  name: "font_small"
+  font: "/gui/font_small.font"
 }
 fonts {
-  name: "title"
-  font: "/gui/title.font"
+  name: "font_big"
+  font: "/gui/font_big.font"
+}
+fonts {
+  name: "font_medium"
+  font: "/gui/font_medium.font"
 }
 textures {
   name: "gui"
@@ -92,7 +96,7 @@ nodes {
   }
   size {
     x: 1080.0
-    y: 200.0
+    y: 150.0
     z: 0.0
     w: 1.0
   }
@@ -146,7 +150,7 @@ nodes {
   }
   size {
     x: 1080.0
-    y: 190.0
+    y: 140.0
     z: 0.0
     w: 1.0
   }
@@ -214,7 +218,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "NEW GAME"
-  font: "title"
+  font: "font_medium"
   id: "newgame_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

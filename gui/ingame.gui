@@ -1,7 +1,7 @@
 script: "/gui/ingame.gui_script"
 fonts {
   name: "title"
-  font: "/gui/title.font"
+  font: "/gui/font_big.font"
 }
 textures {
   name: "gui"
