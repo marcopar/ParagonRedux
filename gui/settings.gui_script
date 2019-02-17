@@ -25,12 +25,8 @@ end
 
 function on_input(self, action_id, action)
 	local group = GO.group("group1", function()
-		GO.button("back", action_id, action, function(button)
-			MO.back()
-		end)
-		GO.button("newgame", action_id, action, function(button)
-			msg.post("game:/game#game", CO.MESSAGE_NEWGAME)
-			MO.back()
+		GO.button(CO.GUI_BACK, action_id, action, function(button)
+			MO.show(hash(CO.SCREEN_MAINMENU))
 		end)
 	end)
 	return group.consumed

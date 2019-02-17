@@ -1,5 +1,5 @@
 [bootstrap]
-main_collection = /main/controller.collectionc
+main_collection = /gui/controller.collectionc
 render = /rendercam/rendercam.renderc
 
 [script]

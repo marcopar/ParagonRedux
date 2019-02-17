@@ -1,6 +1,7 @@
 local CO = require "main.constants"
 local MO = require "monarch.monarch"
 local GO = require "gooey.gooey"
+local MA = require "main.match"
 
 function init(self)
 	GO.acquire_input()
@@ -18,13 +19,18 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	
+	-- Add message-handling code here
+	-- Remove this function if not needed
 end
 
 function on_input(self, action_id, action)
 	local group = GO.group("group1", function()
-		GO.button(CO.GUI_MAINMENU, action_id, action, function(button)
-			MO.show(hash(CO.SCREEN_MAINMENU))
+		GO.button(CO.GUI_NEWGAME, action_id, action, function(button)
+			msg.post("game:/game#game", CO.MESSAGE_NEWGAME)
+			MO.show(hash(CO.SCREEN_GAME))
+		end)
+		GO.button(CO.GUI_SETTINGS, action_id, action, function(button)
+			MO.show(hash(CO.SCREEN_SETTINGS))
 		end)
 	end)
 	return group.consumed

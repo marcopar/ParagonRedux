@@ -3,14 +3,14 @@ local MO = require "monarch.monarch"
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	msg.post("#", CO.SCREEN_GAME)
+	msg.post("#", CO.SCREEN_MAINMENU)
 end
 
 function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash(CO.SCREEN_GAME) then
-		MO.show(hash(CO.SCREEN_GAME))
+	if message_id == hash(CO.SCREEN_MAINMENU) then
+		MO.show(hash(CO.SCREEN_MAINMENU))
 	end
 end

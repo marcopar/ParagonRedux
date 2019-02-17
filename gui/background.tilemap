@@ -1,4 +1,4 @@
-tile_set: "/main/board.tilesource"
+tile_set: "/gui/board.tilesource"
 layers {
   id: "layer"
   z: 0.0
