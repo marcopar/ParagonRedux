@@ -8,6 +8,7 @@ local PL = require "main.players"
 local currentPlayer = CO.PLAYER2
 local swapEvery = 20
 local lastSwapAt = 0
+local marathon = false
 
 
 M.newGlyph = function(player)
@@ -18,6 +19,7 @@ M.newMatch = function()
 	BO.clearBoard()
 	M.newGlyph(CO.PLAYER1)
 	M.newGlyph(CO.PLAYER2)
+	currentPlayer = CO.PLAYER2
 end
 
 M.getNextPlayer = function()
@@ -42,6 +44,20 @@ M.isSwapTriggered = function()
 	return (swapEvery > 0 and lastSwapAt ~= orbCount and orbCount % swapEvery == 0)
 end
 
+M.isMarathon = function()
+	return marathon
+end
 
+M.setMarathon = function(value)
+	marathon = value
+end
+
+M.setSwapEvery = function(value)
+	swapEvery = value
+end
+
+M.getSwapEvery = function()
+	return swapEvery
+end
 
 return M

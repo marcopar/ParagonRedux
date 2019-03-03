@@ -32,6 +32,22 @@ M.freezeCell = function(tile, delay, callback)
 	board.values[cellPos] = CO.FREEZED	
 end
 
+M.clearCell = function(tile)
+	local cellPos = M.getCellIndexInBoard(tile)
+	local orb = board.sprites[cellPos]
+	UT.deleteOrb(orb)
+	board.sprites[cellPos] = nil
+	board.values[cellPos] = nil
+end
+
+M.clearCellAnimated = function(tile, delay, callback)
+	local cellPos = M.getCellIndexInBoard(tile)
+	local orb = board.sprites[cellPos]
+	UT.deleteOrbAnimated(orb, delay, callback)
+	board.sprites[cellPos] = nil
+	board.values[cellPos] = nil
+end
+
 M.swapCell = function(tile, callback)
 	local cellPos = M.getCellIndexInBoard(tile)
 	local orb = board.sprites[cellPos]
@@ -43,14 +59,6 @@ M.swapCell = function(tile, callback)
 		UT.changeOrbType(orb, CO.PLAYER1, 0, callback)
 		board.values[cellPos] = CO.PLAYER1
 	end
-end
-
-M.clearCell = function(tile)
-	local cellPos = M.getCellIndexInBoard(tile)
-	local orb = board.sprites[cellPos]
-	UT.deleteOrb(orb)
-	board.sprites[cellPos] = nil
-	board.values[cellPos] = nil
 end
 
 M.getCell = function(tile)
@@ -157,7 +165,7 @@ M.checkMatchingGlyph = function(player, glyph)
 	return nil
 end
 
-M.freezeGlyph = function(origin, glyph, endCallback)
+M.setGlyphCompleted = function(origin, glyph, marathon, endCallback)
 	local delay = 1
 	for x = 1, CO.GLYPH_W do
 		for y = 1, CO.GLYPH_H do
@@ -167,10 +175,15 @@ M.freezeGlyph = function(origin, glyph, endCallback)
 			if(glyph[i] == 1) then
 				local tile = vmath.vector3(tx, ty, 0)
 				local callback = nil
-				if(delay == (CO.GLYPH_ORBS - 1)) then
+				-- add callback only for the last freezed
+				if(delay == CO.GLYPH_ORBS) then
 					callback = endCallback
 				end
-				M.freezeCell(tile, delay, callback)
+				if(marathon) then
+					M.clearCellAnimated(tile, delay, callback)
+				else
+					M.freezeCell(tile, delay, callback)
+				end
 				delay = delay + 1
 			end
 		end

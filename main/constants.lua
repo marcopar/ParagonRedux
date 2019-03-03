@@ -40,6 +40,8 @@ M.GUI_NEWGAME = "newgame"
 M.GUI_SETTINGS = "settings"
 M.GUI_ABOUT = "about"
 M.GUI_BACK = "back"
+M.GUI_SWAPEVERY = "swapevery"
+M.GUI_MARATHON = "marathon"
 M.GUI_MAINMENU = "mainmenu"
 
 M.MESSAGE_NEWGAME = "NEWGAME"

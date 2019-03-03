@@ -52,6 +52,21 @@ M.deleteOrb = function(orb)
 	go.delete(orb)
 end
 
+local function anim_deleteOrbAnimated_end(self, orb, property)
+	local callback = ST.get(ST.url2key(orb) .. "callback")
+	M.deleteOrb(orb)
+	if(callback ~= nil) then
+		callback()
+	end
+end
+
+-- animated delete
+M.deleteOrbAnimated = function(orb, delay, callback)
+	local url = msg.url(nil, orb, nil)
+	ST.put(ST.url2key(url) .. "callback", callback)
+	go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 0.1, go.EASING_LINEAR, 0.2, delay * 0.5, anim_deleteOrbAnimated_end)
+end
+
 M.getWorldPos = function(action) 
 	local x = action.screen_x
 	local y = action.screen_y

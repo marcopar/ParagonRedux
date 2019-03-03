@@ -22,3 +22,6 @@ max_count = 256
 [sound]
 max_sound_instances = 256
 
+[android]
+package = eu.flatworld.paragonredux
+

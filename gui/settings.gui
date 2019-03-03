@@ -217,7 +217,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "SWAP EVERY"
+  text: "SWAP EVERY XXX"
   font: "font_medium"
   id: "swapevery_text"
   xanchor: XANCHOR_NONE
@@ -287,9 +287,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   outline {
-    x: 0.2
-    y: 0.2
-    z: 0.2
+    x: 0.24705882
+    y: 0.24705882
+    z: 0.24705882
     w: 1.0
   }
   shadow {
@@ -451,7 +451,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "MARATHON"
+  text: "MARATHON XXX"
   font: "font_medium"
   id: "marathon_text"
   xanchor: XANCHOR_NONE
