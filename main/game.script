@@ -160,7 +160,8 @@ function on_input(self, action_id, action)
 			local cell = MA.getBoard().getCell(tile)
 			if(cell == nil) then
 				-- empty cell
-				currentPlayer = MA.getNextPlayer()
+				currentPlayer = MA.getCurrentPlayer()
+				MA.setCurrentPlayer(MA.getNextPlayer())
 				log(currentPlayer .. " orb placed")
 				MA.getBoard().setCell(tile, currentPlayer)
 				-- input reenabled inside the flow

@@ -5,7 +5,7 @@ local BO = require "main.board"
 local GL = require "main.glyphs"
 local PL = require "main.players"
 
-local currentPlayer = CO.PLAYER2
+local currentPlayer = CO.PLAYER1
 local swapEvery = 20
 local lastSwapAt = 0
 local marathon = false
@@ -19,16 +19,23 @@ M.newMatch = function()
 	BO.clearBoard()
 	M.newGlyph(CO.PLAYER1)
 	M.newGlyph(CO.PLAYER2)
-	currentPlayer = CO.PLAYER2
+	currentPlayer = CO.PLAYER1
 end
 
 M.getNextPlayer = function()
 	if(currentPlayer == CO.PLAYER1) then
-		currentPlayer =  CO.PLAYER2
+		return CO.PLAYER2
 	else
-		currentPlayer =  CO.PLAYER1
+		return CO.PLAYER1
 	end
+end
+
+M.getCurrentPlayer = function()
 	return currentPlayer
+end
+
+M.setCurrentPlayer = function(player)
+	currentPlayer = player
 end
 
 M.getBoard = function()
