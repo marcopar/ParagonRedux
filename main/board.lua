@@ -194,4 +194,27 @@ M.dumpBoard = function(glyph)
 	pprint(board.values)
 end
 
+M.getBoardValues = function()
+	local copy = {}
+	for k,v in pairs(board.values) do
+		copy[k] = v
+	end
+	return copy
+end
+
+M.setBoardValues = function(values)
+	M.clearBoard()
+	local tile = vmath.vector3()
+	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
+		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do
+			tile.x = x;
+			tile.y = y;
+			local cellPos = M.getCellIndexInBoard(tile)
+			if(values[cellPos] ~= nil) then
+				M.setCell(tile, values[cellPos])
+			end
+		end
+	end
+end
+
 return M

@@ -67,4 +67,14 @@ M.getSwapEvery = function()
 	return swapEvery
 end
 
+M.getState = function()
+	state = {}
+	state["board"] = BO.getBoardValues()
+	return state
+end
+
+M.setState = function(state)
+	BO.setBoardValues(state["board"])
+end
+
 return M

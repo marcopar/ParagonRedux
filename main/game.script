@@ -171,6 +171,9 @@ function on_input(self, action_id, action)
 			end
 		else
 			inputDisabled = false
+
+			local state = MA.getState()
+			MA.setState(state)
 		end
 	end
 end
