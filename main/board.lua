@@ -15,7 +15,7 @@ M.isOnBoard =  function(tile)
 	if(tile.x >= CO.BOARD_XMIN and tile.x <= CO.BOARD_XMAX and tile.y >= CO.BOARD_YMIN and tile.y <=CO.BOARD_YMAX) then
 		return true
 	end
-	return false		
+	return false
 end
 
 M.setCell = function(tile, player)
@@ -188,10 +188,6 @@ M.setGlyphCompleted = function(origin, glyph, marathon, endCallback)
 			end
 		end
 	end
-end
-
-M.dumpBoard = function(glyph)
-	pprint(board.values)
 end
 
 M.getBoardValues = function()

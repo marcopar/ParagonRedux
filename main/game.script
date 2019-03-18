@@ -2,7 +2,6 @@ local CO = require "main.constants"
 local UT = require "main.utils"
 local MA = require "main.match"
 local ST = require "main.storage"
-
 local FL = require "ludobits.m.flow"
 
 local checkingSingleGlyph = false
@@ -12,18 +11,11 @@ local inputDisabled = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
-	msg.post("#", "show_first_screen")
-	-- randomize and discard the first values as they may be always be the same
-	math.randomseed(os.time())
-	math.random()
-	math.random()
-	math.random()
-
-	MA.newMatch()
 end
 
 function final(self)
 	-- cleanup
+	MA.resetState()
 	FL.stop()
 end
 
@@ -35,6 +27,9 @@ end
 function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
 		MA.newMatch()
+	end
+	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
+		MA.loadGame()
 	end
 end
 
@@ -169,11 +164,9 @@ function on_input(self, action_id, action)
 			else
 				inputDisabled = false
 			end
+			MA.saveGame()
 		else
 			inputDisabled = false
-
-			local state = MA.getState()
-			MA.setState(state)
 		end
 	end
 end

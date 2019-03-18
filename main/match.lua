@@ -10,16 +10,15 @@ local swapEvery = 20
 local lastSwapAt = 0
 local marathon = false
 
-
 M.newGlyph = function(player)
 	PL.setGlyph(player, GL.getRandomGlyph())
 end
 
 M.newMatch = function()
-	BO.clearBoard()
+	M.resetState()
+	M.deleteGame()
 	M.newGlyph(CO.PLAYER1)
 	M.newGlyph(CO.PLAYER2)
-	currentPlayer = CO.PLAYER1
 end
 
 M.getNextPlayer = function()
@@ -68,13 +67,68 @@ M.getSwapEvery = function()
 end
 
 M.getState = function()
-	state = {}
-	state["board"] = BO.getBoardValues()
+	local state = {currentPlayer={},lastSwapAt={},swapEvery={},marathon={},
+		board={},player1glyph={},player2glyph={}}
+	state.currentPlayer = currentPlayer
+	state.lastSwapAt = lastSwapAt
+	state.swapEvery = swapEvery
+	state.marathon = marathon
+	state.player1glyph = PL.getGlyph(CO.PLAYER1)
+	state.player2glyph = PL.getGlyph(CO.PLAYER2)
+	state.board = BO.getBoardValues()
 	return state
 end
 
 M.setState = function(state)
-	BO.setBoardValues(state["board"])
+	currentPlayer = state.currentPlayer
+	lastSwapAt = state.lastSwapAt
+	swapEvery = state.swapEvery
+	marathon = state.marathon
+	PL.setGlyph(CO.PLAYER1, state.player1glyph)
+	PL.setGlyph(CO.PLAYER2, state.player2glyph)
+	BO.setBoardValues(state.board)
+end
+
+M.resetState = function()
+	currentPlayer = CO.PLAYER1
+	swapEvery = 20
+	lastSwapAt = 0
+	marathon = false
+	BO.clearBoard()
+	PL.clearGlyph(CO.PLAYER1)
+	PL.clearGlyph(CO.PLAYER2)
+end
+
+M.saveGame = function()
+	local filename = sys.get_save_file("paragonredux", "game")
+	local state = M.getState()
+	sys.save(filename, state)
+end
+
+M.deleteGame = function()
+	local filename = sys.get_save_file("paragonredux", "game")
+	local state = {}
+	sys.save(filename, state)
+end
+
+M.loadGame = function()
+	local filename = sys.get_save_file("paragonredux", "game")
+	local state = sys.load(filename)
+	if(state.currentPlayer ~= nil) then
+		M.setState(state)
+		return true
+	end
+	return false
+end
+
+M.isSaveGameExists = function()
+	local filename = sys.get_save_file("paragonredux", "game")
+	local state = sys.load(filename)
+	if(state.currentPlayer ~= nil) then
+		return true
+	end
+	return false
 end
 
 return M
+	

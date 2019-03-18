@@ -35,7 +35,27 @@ M.getGlyph = function(player)
 	return players[player].glyph
 end
 
-M.setCell = function(tile, player)
+M.clearGlyph = function(player)
+	local xmin = 0
+	local ymax = 0
+	if(player == CO.PLAYER1) then
+		xmin = CO.PLAYER1_GRID_XMIN
+		ymax = CO.PLAYER1_GRID_YMAX
+	elseif(player == CO.PLAYER2) then
+		xmin = CO.PLAYER2_GRID_XMIN
+		ymax = CO.PLAYER2_GRID_YMAX
+	end
+	for i = 1, CO.GLYPH_W * CO.GLYPH_W do
+		local x = xmin + ((i - 1) % CO.GLYPH_W)
+		local y = ymax - math.floor((i-1) / CO.GLYPH_H)
+		local tile = vmath.vector3(x, y, 0)
+		UT.deleteOrb(players[player].sprites[i])
+		players[player].sprites[i] = nil
+	end
+	players[player].glyph = nil
+end
+
+M.setCell_deprecated = function(tile, player)
 	local orbPos = M.getTileCenterPosition(tile)
 	local orb = factory.create("#orb_factory", orbPos, nil, nil)
 	sprite.play_flipbook(orb, CO.ORBS[player])	

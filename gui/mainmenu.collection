@@ -1,6 +1,6 @@
 name: "mainmenu"
 instances {
-  id: "camera"
+  id: "mainmenu_camera"
   prototype: "/rendercam/camera.go"
   position {
     x: 0.0

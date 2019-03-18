@@ -1,4 +1,4 @@
-name: "default"
+name: "controller"
 scale_along_z: 0
 embedded_instances {
   id: "game"
@@ -23,7 +23,7 @@ embedded_instances {
   "  }\n"
   "  properties {\n"
   "    id: \"preload\"\n"
-  "    value: \"true\"\n"
+  "    value: \"false\"\n"
   "    type: PROPERTY_TYPE_BOOLEAN\n"
   "  }\n"
   "}\n"
@@ -179,7 +179,7 @@ embedded_instances {
   "  }\n"
   "  properties {\n"
   "    id: \"preload\"\n"
-  "    value: \"true\"\n"
+  "    value: \"false\"\n"
   "    type: PROPERTY_TYPE_BOOLEAN\n"
   "  }\n"
   "}\n"

@@ -1,6 +1,5 @@
 local M = {}
 
-M.CAMERA_ID = hash("/camera")
 -- player1, player2, freezed as defined by the underlying constants
 M.ORBS = {hash("red_orb"), hash("blue_orb"), hash("white_orb")}
 M.PLAYER1 = 1
@@ -37,6 +36,7 @@ M.SCREEN_ABOUT = "ABOUT"
 M.SCREEN_MAINMENU = "MAINMENU"
 
 M.GUI_NEWGAME = "newgame"
+M.GUI_RESUMEGAME = "resumegame"
 M.GUI_SETTINGS = "settings"
 M.GUI_ABOUT = "about"
 M.GUI_BACK = "back"
@@ -45,5 +45,6 @@ M.GUI_MARATHON = "marathon"
 M.GUI_MAINMENU = "mainmenu"
 
 M.MESSAGE_NEWGAME = "NEWGAME"
+M.MESSAGE_RESUMEGAME = "RESUMEGAME"
 
 return M

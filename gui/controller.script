@@ -1,8 +1,14 @@
 local CO = require "main.constants"
 local MO = require "monarch.monarch"
+local MA = require "main.match"
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+	-- randomize and discard the first values as they may be always be the same
+	math.randomseed(os.time())
+	math.random()
+	math.random()
+	math.random()
 	msg.post("#", CO.SCREEN_MAINMENU)
 end
 
@@ -12,5 +18,8 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash(CO.SCREEN_MAINMENU) then
 		MO.show(hash(CO.SCREEN_MAINMENU))
+	elseif message_id == hash(CO.SCREEN_GAME) then
+		MO.show(hash(CO.SCREEN_GAME))
 	end
+		
 end
