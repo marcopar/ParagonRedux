@@ -9,6 +9,7 @@ function init(self)
 	math.random()
 	math.random()
 	math.random()
+
 	msg.post("#", CO.SCREEN_MAINMENU)
 end
 
@@ -21,5 +22,4 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash(CO.SCREEN_GAME) then
 		MO.show(hash(CO.SCREEN_GAME))
 	end
-		
 end

@@ -67,12 +67,10 @@ M.getSwapEvery = function()
 end
 
 M.getState = function()
-	local state = {currentPlayer={},lastSwapAt={},swapEvery={},marathon={},
+	local state = {currentPlayer={},lastSwapAt={},
 		board={},player1glyph={},player2glyph={}}
 	state.currentPlayer = currentPlayer
 	state.lastSwapAt = lastSwapAt
-	state.swapEvery = swapEvery
-	state.marathon = marathon
 	state.player1glyph = PL.getGlyph(CO.PLAYER1)
 	state.player2glyph = PL.getGlyph(CO.PLAYER2)
 	state.board = BO.getBoardValues()
@@ -82,8 +80,6 @@ end
 M.setState = function(state)
 	currentPlayer = state.currentPlayer
 	lastSwapAt = state.lastSwapAt
-	swapEvery = state.swapEvery
-	marathon = state.marathon
 	PL.setGlyph(CO.PLAYER1, state.player1glyph)
 	PL.setGlyph(CO.PLAYER2, state.player2glyph)
 	BO.setBoardValues(state.board)
@@ -92,39 +88,92 @@ end
 M.resetState = function()
 	currentPlayer = CO.PLAYER1
 	swapEvery = 20
-	lastSwapAt = 0
-	marathon = false
 	BO.clearBoard()
 	PL.clearGlyph(CO.PLAYER1)
 	PL.clearGlyph(CO.PLAYER2)
 end
 
+M.getSettings = function()
+	local settings = {swapEvery={},marathon={}}
+	settings.swapEvery = swapEvery
+	settings.marathon = marathon
+	return settings
+end
+
+M.setSettings = function(settings)
+	swapEvery = settings.swapEvery
+	marathon = settings.marathon
+end
+
+M.resetSettings = function()
+	lastSwapAt = 0
+	marathon = false
+end
+
 M.saveGame = function()
-	local filename = sys.get_save_file("paragonredux", "game")
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local state = M.getState()
-	sys.save(filename, state)
+	local settings = M.getSettings()
+	local file = {state = {}, settings = {}}
+	file.state = state
+	file.settings = settings
+	sys.save(filename, file)
 end
 
 M.deleteGame = function()
-	local filename = sys.get_save_file("paragonredux", "game")
-	local state = {}
-	sys.save(filename, state)
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
+	local file = {}
+	sys.save(filename, file)
 end
 
 M.loadGame = function()
-	local filename = sys.get_save_file("paragonredux", "game")
-	local state = sys.load(filename)
-	if(state.currentPlayer ~= nil) then
-		M.setState(state)
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
+	local file = sys.load(filename)
+	if(file.state ~= nil and file.settings ~= nil) then
+		M.setState(file.state)
+		M.setSettings(file.settings)
 		return true
 	end
 	return false
 end
 
 M.isSaveGameExists = function()
-	local filename = sys.get_save_file("paragonredux", "game")
-	local state = sys.load(filename)
-	if(state.currentPlayer ~= nil) then
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
+	local file = sys.load(filename)
+	if(file.state ~= nil and file.settings ~= nil) then
+		return true
+	end
+	return false
+end
+
+M.saveSettings = function()
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
+	local settings = M.getSettings()
+	local file = {settings={}}
+	file.settings = settings
+	sys.save(filename, file)
+end
+
+M.deleteSettings = function()
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
+	local file = {}
+	sys.save(filename, file)
+end
+
+M.loadSettings = function()
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
+	local file = sys.load(filename)
+	if(file.settings ~= nil) then
+		M.setSettings(file.settings)
+		return true
+	end
+	return false
+end
+
+M.isSettingsExists = function()
+	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
+	local file = sys.load(filename)
+	if(file.settings ~= nil) then
 		return true
 	end
 	return false

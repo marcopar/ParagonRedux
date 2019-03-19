@@ -31,6 +31,9 @@ function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
 		MA.loadGame()
 	end
+	if(message_id == hash(CO.MESSAGE_LOADSETTINGS)) then
+		MA.loadSettings()
+	end
 end
 
 local function log(msg) 
@@ -140,6 +143,7 @@ function checkAndSwapFlow()
 		checkMatchingGlyphs()
 		FL.until_true(checkingGlyphsCompleted)
 	end
+	MA.saveGame()
 	inputDisabled = false
 end
 
@@ -159,12 +163,12 @@ function on_input(self, action_id, action)
 				MA.setCurrentPlayer(MA.getNextPlayer())
 				log(currentPlayer .. " orb placed")
 				MA.getBoard().setCell(tile, currentPlayer)
+				MA.saveGame()
 				-- input reenabled inside the flow
 				FL.start(checkAndSwapFlow)
 			else
 				inputDisabled = false
-			end
-			MA.saveGame()
+			end			
 		else
 			inputDisabled = false
 		end

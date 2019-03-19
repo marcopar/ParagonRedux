@@ -7,6 +7,11 @@ function init(self)
 	GO.acquire_input()
 	msg.post(".", "acquire_input_focus")
 
+	if(MA.isSettingsExists()) then
+		print("settings exists")
+		MA.loadSettings()
+	end
+
 	local pos
 	if(MA.isSaveGameExists()) then
 		print("savegame exists")
@@ -35,12 +40,12 @@ function on_message(self, message_id, message, sender)
 	-- Remove this function if not needed
 end
 
-local function screenLoadedResume()
+local function screenLoadedResumeGame()
 	msg.post("game:/game#game", CO.MESSAGE_RESUMEGAME)
 	MO.show(hash(CO.SCREEN_GAME))
 end
 
-local function screenLoadedNew()
+local function screenLoadedNewGame()
 	msg.post("game:/game#game", CO.MESSAGE_NEWGAME)
 	MO.show(hash(CO.SCREEN_GAME))
 end
@@ -48,10 +53,10 @@ end
 function on_input(self, action_id, action)
 	local group = GO.group("group1", function()
 		GO.button(CO.GUI_NEWGAME, action_id, action, function(button)
-			MO.preload(CO.SCREEN_GAME, screenLoadedNew)
+			MO.preload(CO.SCREEN_GAME, screenLoadedNewGame)
 		end)
 		GO.button(CO.GUI_RESUMEGAME, action_id, action, function(button)
-			MO.preload(CO.SCREEN_GAME, screenLoadedResume)
+			MO.preload(CO.SCREEN_GAME, screenLoadedResumeGame)
 		end)
 		GO.button(CO.GUI_SETTINGS, action_id, action, function(button)
 			MO.show(hash(CO.SCREEN_SETTINGS))
@@ -63,7 +68,7 @@ function on_input(self, action_id, action)
 			table.board[1] = 3
 			print("table contents")
 			pprint(table)
-			local filename = sys.get_save_file("paragonredux", "game")
+			local filename = sys.get_save_file("paragonredux", "test")
 			sys.save(filename, table)
 			local loadedTable = sys.load(filename)
 			print("table contents after load")
