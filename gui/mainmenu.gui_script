@@ -62,17 +62,21 @@ function on_input(self, action_id, action)
 			MO.show(hash(CO.SCREEN_SETTINGS))
 		end)
 		GO.button(CO.GUI_ABOUT, action_id, action, function(button)
-			local table = {board={}}
-			table.board[-1] = 1
-			table.board[0] = 2
-			table.board[1] = 3
+			local t = {board={}}
+			t.board[-1] = 1
+			t.board[0] = 2
+			t.board[1] = 3
 			print("table contents")
-			pprint(table)
+			pprint(t)
 			local filename = sys.get_save_file("paragonredux", "test")
-			sys.save(filename, table)
+			sys.save(filename, t)
 			local loadedTable = sys.load(filename)
 			print("table contents after load")
 			pprint(loadedTable)
+
+			MA.resetState()
+			MA.saveGame()
+			MA.saveSettings()
 		end)
 
 		

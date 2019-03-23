@@ -73,4 +73,13 @@ M.getWorldPos = function(action)
 	return RE.screen_to_world_2d(x, y)		
 end
 
+M.indexOf = function(table, value)
+	for k,v in pairs(table) do
+		if(v == value) then
+			return k
+		end
+	end
+	return -1
+end
+
 return M

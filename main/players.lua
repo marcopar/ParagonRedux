@@ -55,13 +55,4 @@ M.clearGlyph = function(player)
 	players[player].glyph = nil
 end
 
-M.setCell_deprecated = function(tile, player)
-	local orbPos = M.getTileCenterPosition(tile)
-	local orb = factory.create("#orb_factory", orbPos, nil, nil)
-	sprite.play_flipbook(orb, CO.ORBS[player])	
-	local cellPos = M.getCellIndexInBoard(tile)
-	board.sprites[cellPos] = orb
-	board.values[cellPos] = player
-end
-
 return M

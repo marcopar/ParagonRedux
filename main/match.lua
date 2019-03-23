@@ -9,6 +9,8 @@ local currentPlayer = CO.PLAYER1
 local swapEvery = 20
 local lastSwapAt = 0
 local marathon = false
+local player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
+local player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
 
 M.newGlyph = function(player)
 	PL.setGlyph(player, GL.getRandomGlyph())
@@ -35,6 +37,22 @@ end
 
 M.setCurrentPlayer = function(player)
 	currentPlayer = player
+end
+
+M.getPlayer1Type = function()
+	return player1Type
+end
+
+M.setPlayer1Type = function(type)
+	player1Type = type
+end
+
+M.getPlayer2Type = function()
+	return player2Type
+end
+
+M.setPlayer2Type = function(type)
+	player2Type = type
 end
 
 M.getBoard = function()
@@ -67,54 +85,89 @@ M.getSwapEvery = function()
 end
 
 M.getState = function()
-	local state = {currentPlayer={},lastSwapAt={},
-		board={},player1glyph={},player2glyph={}}
+	local state = {currentPlayer=nil,lastSwapAt=nil,
+	board=nil,player1Glyph=nil,player2Glyph=nil,
+	player1Type=nil, player2Type=nil}
 	state.currentPlayer = currentPlayer
 	state.lastSwapAt = lastSwapAt
-	state.player1glyph = PL.getGlyph(CO.PLAYER1)
-	state.player2glyph = PL.getGlyph(CO.PLAYER2)
+	state.player1Type = player1Type
+	state.player2Type = player2Type
+	state.player1Glyph = PL.getGlyph(CO.PLAYER1)
+	state.player2Glyph = PL.getGlyph(CO.PLAYER2)
 	state.board = BO.getBoardValues()
 	return state
 end
 
 M.setState = function(state)
-	currentPlayer = state.currentPlayer
-	lastSwapAt = state.lastSwapAt
-	PL.setGlyph(CO.PLAYER1, state.player1glyph)
-	PL.setGlyph(CO.PLAYER2, state.player2glyph)
-	BO.setBoardValues(state.board)
+	if(state.currentPlayer ~= nil) then
+		currentPlayer = state.currentPlayer
+	end
+	if(state.lastSwapAt ~= nil) then
+		lastSwapAt = state.lastSwapAt
+	end
+	if(state.player1Type ~= nil) then
+		player1Type = state.player1Type
+	end
+	if(state.player2Type ~= nil) then
+		player2Type = state.player2Type
+	end
+	if(state.player1Glyph ~= nil) then
+		PL.setGlyph(CO.PLAYER1, state.player1Glyph)
+	end
+	if(state.player2Glyph ~= nil) then
+		PL.setGlyph(CO.PLAYER2, state.player2Glyph)
+	end
+	if(state.board ~= nil) then
+		BO.setBoardValues(state.board)
+	end
 end
 
 M.resetState = function()
 	currentPlayer = CO.PLAYER1
 	swapEvery = 20
+	player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
+	player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
 	BO.clearBoard()
 	PL.clearGlyph(CO.PLAYER1)
 	PL.clearGlyph(CO.PLAYER2)
 end
 
 M.getSettings = function()
-	local settings = {swapEvery={},marathon={}}
+	local settings = {swapEvery=nil,marathon=nil, player1Type=nil, player2Type=nil}
 	settings.swapEvery = swapEvery
 	settings.marathon = marathon
+	settings.player1Type = player1Type
+	settings.player2Type = player2Type
 	return settings
 end
 
 M.setSettings = function(settings)
-	swapEvery = settings.swapEvery
-	marathon = settings.marathon
+	if(settings.currentPlayer ~= nil) then
+		currentPlayer = settings.currentPlayer
+	end
+	if(settings.lastSwapAt ~= nil) then
+		lastSwapAt = settings.lastSwapAt
+	end
+	if(settings.player1Type ~= nil) then
+		player1Type = settings.player1Type
+	end
+	if(settings.player2Type ~= nil) then
+		player2Type = settings.player2Type
+	end
 end
 
 M.resetSettings = function()
 	lastSwapAt = 0
 	marathon = false
+	player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
+	player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
 end
 
 M.saveGame = function()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local state = M.getState()
 	local settings = M.getSettings()
-	local file = {state = {}, settings = {}}
+	local file = {state = nil, settings = nil}
 	file.state = state
 	file.settings = settings
 	sys.save(filename, file)
@@ -149,7 +202,7 @@ end
 M.saveSettings = function()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local settings = M.getSettings()
-	local file = {settings={}}
+	local file = {settings=nil}
 	file.settings = settings
 	sys.save(filename, file)
 end

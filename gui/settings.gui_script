@@ -2,6 +2,7 @@ local CO = require "main.constants"
 local MO = require "monarch.monarch"
 local GO = require "gooey.gooey"
 local MA = require "main.match"
+local UT = require "main.utils"
 
 local function formatText(label, value)
 	return label .. "  " .. value
@@ -13,6 +14,12 @@ end
 
 local function cycleMarathonValue(value)
 	return not value
+end
+
+local function cyclePlayerTypeValue(value)
+	local idx = UT.indexOf(CO.SETTINGS_PLAYER_TYPES, value)
+	local newidx =  (idx % table.getn(CO.SETTINGS_PLAYER_TYPES)) + 1
+	return CO.SETTINGS_PLAYER_TYPES[newidx]
 end
 
 local function getBooleanTextValue(value)
@@ -33,6 +40,10 @@ function init(self)
 	gui.set_text(text, formatText("SWAP EVERY", MA.getSwapEvery()))
 	text = gui.get_node(CO.GUI_MARATHON .. "_text")
 	gui.set_text(text, formatText("MARATHON", getBooleanTextValue(MA.isMarathon())))
+	text = gui.get_node(CO.GUI_PLAYER1TYPE .. "_text")
+	gui.set_text(text, formatText("PLAYER 1 ", MA.getPlayer1Type()))
+	text = gui.get_node(CO.GUI_PLAYER2TYPE .. "_text")
+	gui.set_text(text, formatText("PLAYER 2 ", MA.getPlayer2Type()))
 end
 
 function final(self)
@@ -70,7 +81,19 @@ function on_input(self, action_id, action)
 			
 			local text = gui.get_node(CO.GUI_MARATHON .. "_text")
 			gui.set_text(text, formatText("MARATHON", getBooleanTextValue(MA.isMarathon())))
-				end)
+		end)
+		GO.button(CO.GUI_PLAYER1TYPE, action_id, action, function(button)
+			local newValue = cyclePlayerTypeValue(MA.getPlayer1Type())
+			MA.setPlayer1Type(newValue)
+			local text = gui.get_node(CO.GUI_PLAYER1TYPE .. "_text")
+			gui.set_text(text, formatText("PLAYER 1 ", MA.getPlayer1Type()))
+		end)
+		GO.button(CO.GUI_PLAYER2TYPE, action_id, action, function(button)
+			local newValue = cyclePlayerTypeValue(MA.getPlayer2Type())
+			MA.setPlayer2Type(newValue)
+			local text = gui.get_node(CO.GUI_PLAYER2TYPE .. "_text")
+			gui.set_text(text, formatText("PLAYER 2 ", MA.getPlayer2Type()))
+		end)
 	end)
 	return group.consumed
 end

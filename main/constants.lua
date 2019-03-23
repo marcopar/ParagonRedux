@@ -1,6 +1,6 @@
 local M = {}
 
--- player1, player2, freezed as defined by the underlying constants
+-- player1, player2, freezed as defined by the following constants
 M.ORBS = {hash("red_orb"), hash("blue_orb"), hash("white_orb")}
 M.PLAYER1 = 1
 M.PLAYER2 = 2
@@ -43,6 +43,8 @@ M.GUI_BACK = "back"
 M.GUI_SWAPEVERY = "swapevery"
 M.GUI_MARATHON = "marathon"
 M.GUI_MAINMENU = "mainmenu"
+M.GUI_PLAYER1TYPE = "player1"
+M.GUI_PLAYER2TYPE = "player2"
 
 M.MESSAGE_NEWGAME = "NEWGAME"
 M.MESSAGE_RESUMEGAME = "RESUMEGAME"
@@ -51,5 +53,11 @@ M.MESSAGE_LOADSETTINGS = "LOADSETTINGS"
 M.FILE_GAMENAME = "paragonredux"
 M.FILE_SETTINGS = "settings"
 M.FILE_GAME = "game"
+
+M.SETTINGS_PLAYER_TYPE_HUMAN = "HUMAN"
+M.SETTINGS_PLAYER_TYPE_AI1 = "AI 1"
+M.SETTINGS_PLAYER_TYPE_AI2 = "AI 2"
+M.SETTINGS_PLAYER_TYPE_AI3 = "AI 3"
+M.SETTINGS_PLAYER_TYPES = { M.SETTINGS_PLAYER_TYPE_HUMAN, M.SETTINGS_PLAYER_TYPE_AI1,M.SETTINGS_PLAYER_TYPE_AI2, M.SETTINGS_PLAYER_TYPE_AI3 }
 
 return M
