@@ -82,4 +82,8 @@ M.indexOf = function(table, value)
 	return -1
 end
 
+M.log = function(msg) 
+	print(os.clock() .. ": " .. msg )
+end
+
 return M

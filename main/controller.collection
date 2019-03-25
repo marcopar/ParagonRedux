@@ -67,7 +67,7 @@ embedded_instances {
   id: "controller"
   data: "components {\n"
   "  id: \"controller\"\n"
-  "  component: \"/gui/controller.script\"\n"
+  "  component: \"/main/controller.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

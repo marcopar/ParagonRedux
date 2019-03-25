@@ -36,13 +36,9 @@ function on_message(self, message_id, message, sender)
 	end
 end
 
-local function log(msg) 
-	print(os.clock() .. ": " .. msg .. " inputDisabled=" .. tostring(isInputDisabled()))
-end
-
 -- callback after freezing a glyph
 local function freezeGlyphCompletedP2()
-	log("2 freeze completed")
+	UT.log("2 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
 	checkMatchingGlyph(CO.PLAYER2, true)
@@ -50,7 +46,7 @@ end
 
 -- callback after freezing a glyph
 local function freezeGlyphCompletedP1()
-	log("1 freeze completed")
+	UT.log("1 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
 	checkMatchingGlyph(CO.PLAYER1, true)
@@ -68,18 +64,18 @@ end
 -- check for a match for the given player
 -- anyFound is set after finding a match in the freeze completed callback
 function checkMatchingGlyph(player, anyFound)
-	log(player .. " check match")
+	UT.log(player .. " check match")
 	checkingSingleGlyph = true
 	local glyph = MA.getPlayers().getGlyph(player)
 	local match = MA.getBoard().checkMatchingGlyph(player, glyph)
 	if(match ~= nil) then
 		-- freeze the match on the board
-		log(player .. " MATCH FOUND")
+		UT.log(player .. " MATCH FOUND")
 		MA.getBoard().setGlyphCompleted(match, glyph, MA.isMarathon(), getFreezeGlyphCompletedCallback(player))
 	else
-		log(player .. " match not found")
+		UT.log(player .. " match not found")
 		if(anyFound) then
-			log(player .. " NEW GLYPH")
+			UT.log(player .. " NEW GLYPH")
 			MA.newGlyph(player)
 			-- recheck
 			checkMatchingGlyph(player, false)
@@ -97,7 +93,7 @@ end
 --check for a match for both players
 local function checkMatchingGlyphs()
 	checkingGlyphs = true
-	log("1-2 check match")
+	UT.log("1-2 check match")
 	-- execute the checks one after the other and not in paralles as it would happen without using FLOW
 	FL.start(function()
 		checkMatchingGlyph(CO.PLAYER1)
@@ -105,14 +101,14 @@ local function checkMatchingGlyphs()
 		checkMatchingGlyph(CO.PLAYER2)
 		FL.until_true(isCheckingSingleGlyphOngoing)
 		checkingGlyphs = false
-		log("1-2 check match completed")
+		UT.log("1-2 check match completed")
 	end)
 end
 
 -- callback for the swap board
 local function swapCompleted() 
 	swapping = false
-	log("swap completed")
+	UT.log("swap completed")
 end
 
 function isSwapCompleted()
@@ -121,7 +117,7 @@ end
 
 --swap the board
 local function swapBoard()
-	log("SWAP --------------")
+	UT.log("SWAP --------------")
 	swapping = true
 	MA.getBoard().swapBoard(swapCompleted)
 end
@@ -161,7 +157,7 @@ function on_input(self, action_id, action)
 				-- empty cell
 				currentPlayer = MA.getCurrentPlayer()
 				MA.setCurrentPlayer(MA.getNextPlayer())
-				log(currentPlayer .. " orb placed")
+				UT.log(currentPlayer .. " orb placed")
 				MA.getBoard().setCell(tile, currentPlayer)
 				MA.saveGame()
 				-- input reenabled inside the flow

@@ -14,8 +14,6 @@ function init(self)
 	math.random()
 	math.random()
 	math.random()
-
-	pprint(CO.SETTINGS_PLAYER_TYPES)
 	
 	if(MA.isSaveGameExists()) then
 		print("savegame exists")
