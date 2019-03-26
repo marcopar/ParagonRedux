@@ -67,9 +67,7 @@ M.deleteOrbAnimated = function(orb, delay, callback)
 	go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 0.1, go.EASING_LINEAR, 0.2, delay * 0.5, anim_deleteOrbAnimated_end)
 end
 
-M.getWorldPos = function(action) 
-	local x = action.screen_x
-	local y = action.screen_y
+M.getWorldPos = function(x, y)
 	return RE.screen_to_world_2d(x, y)		
 end
 

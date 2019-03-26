@@ -139,8 +139,27 @@ function checkAndSwapFlow()
 		checkMatchingGlyphs()
 		FL.until_true(checkingGlyphsCompleted)
 	end
+	MA.setCurrentPlayer(MA.getNextPlayer())
 	MA.saveGame()
 	inputDisabled = false
+end
+
+local function processPlayerInput(currentPlayer, tile)
+	inputDisabled = true
+	if(MA.getBoard().isOnBoard(tile)) then
+		local cell = MA.getBoard().getCell(tile)
+		if(cell == nil) then
+			-- empty cell
+			UT.log(currentPlayer .. " orb placed")
+			MA.getBoard().setCell(tile, currentPlayer)
+			-- input reenabled inside the flow
+			FL.start(checkAndSwapFlow)
+		else
+			inputDisabled = false
+		end			
+	else
+		inputDisabled = false
+	end
 end
 
 function on_input(self, action_id, action)
@@ -148,25 +167,13 @@ function on_input(self, action_id, action)
 		if(isInputDisabled()) then
 			return
 		end
-		inputDisabled = true
-		local pos = UT.getWorldPos(action)
+		local x = action.screen_x
+		local y = action.screen_y
+		local pos = UT.getWorldPos(x, y)
 		local tile = UT.getTile(pos)
 		if(MA.getBoard().isOnBoard(tile)) then
-			local cell = MA.getBoard().getCell(tile)
-			if(cell == nil) then
-				-- empty cell
-				currentPlayer = MA.getCurrentPlayer()
-				MA.setCurrentPlayer(MA.getNextPlayer())
-				UT.log(currentPlayer .. " orb placed")
-				MA.getBoard().setCell(tile, currentPlayer)
-				MA.saveGame()
-				-- input reenabled inside the flow
-				FL.start(checkAndSwapFlow)
-			else
-				inputDisabled = false
-			end			
-		else
-			inputDisabled = false
+			currentPlayer = MA.getCurrentPlayer()
+			processPlayerInput(currentPlayer, tile)
 		end
 	end
 end
