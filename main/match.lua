@@ -9,8 +9,6 @@ local currentPlayer = CO.PLAYER1
 local swapEvery = 20
 local lastSwapAt = 0
 local marathon = false
-local player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
-local player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
 
 M.newGlyph = function(player)
 	PL.setGlyph(player, GL.getRandomGlyph())
@@ -39,27 +37,11 @@ M.setCurrentPlayer = function(player)
 	currentPlayer = player
 end
 
-M.getPlayer1Type = function()
-	return player1Type
-end
-
-M.setPlayer1Type = function(type)
-	player1Type = type
-end
-
-M.getPlayer2Type = function()
-	return player2Type
-end
-
-M.setPlayer2Type = function(type)
-	player2Type = type
-end
-
 M.getBoard = function()
 	return BO
 end
 
-M.getPlayers = function()
+M.getPlayers= function()
 	return PL
 end
 
@@ -136,8 +118,8 @@ M.getSettings = function()
 	local settings = {swapEvery=nil,marathon=nil, player1Type=nil, player2Type=nil}
 	settings.swapEvery = swapEvery
 	settings.marathon = marathon
-	settings.player1Type = player1Type
-	settings.player2Type = player2Type
+	settings.player1Type = PL.getType(CO.PLAYER1)
+	settings.player2Type = PL.getType(CO.PLAYER2)
 	return settings
 end
 
@@ -149,18 +131,18 @@ M.setSettings = function(settings)
 		lastSwapAt = settings.lastSwapAt
 	end
 	if(settings.player1Type ~= nil) then
-		player1Type = settings.player1Type
+		PL.setType(CO.PLAYER1, settings.player1Type)
 	end
 	if(settings.player2Type ~= nil) then
-		player2Type = settings.player2Type
+		PL.setType(CO.PLAYER2, settings.player2Type)
 	end
 end
 
 M.resetSettings = function()
 	lastSwapAt = 0
 	marathon = false
-	player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
-	player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
+	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
+	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 end
 
 M.saveGame = function()

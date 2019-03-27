@@ -4,8 +4,8 @@ local CO = require "main.constants"
 local UT = require "main.utils"
 
 local players = { 
-	{ glyph={}, sprites={}, type=nil }, 
-	{ glyph={}, sprites={}, type=nil }
+	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN }, 
+	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN }
 }
 
 M.setType = function(player, type)

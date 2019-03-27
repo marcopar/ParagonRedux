@@ -167,6 +167,9 @@ function on_input(self, action_id, action)
 		if(isInputDisabled()) then
 			return
 		end
+		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+			return
+		end
 		local x = action.screen_x
 		local y = action.screen_y
 		local pos = UT.getWorldPos(x, y)
