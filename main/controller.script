@@ -1,6 +1,7 @@
 local CO = require "main.constants"
 local MO = require "monarch.monarch"
 local MA = require "main.match"
+local UT = require "main.utils"
 
 local function screenLoadedResumeGame()
 	msg.post("game:/game#game", CO.MESSAGE_RESUMEGAME)
@@ -16,7 +17,7 @@ function init(self)
 	math.random()
 	
 	if(MA.isSaveGameExists()) then
-		print("savegame exists")
+		UT.log("savegame exists")
 		MO.preload(CO.SCREEN_GAME, screenLoadedResumeGame)
 	else
 		msg.post("#", CO.SCREEN_MAINMENU)

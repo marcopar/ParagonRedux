@@ -8,10 +8,17 @@ function init(self)
 	GO.acquire_input()
 	msg.post(".", "acquire_input_focus")
 
-	if(MA.isSettingsExists()) then
-		UT.log("settings exists")
-		MA.loadSettings()
+	local pos
+	if(MA.isSaveGameExists()) then
+		UT.log("savegame exists")
+		pos = vmath.vector3(540, 1210, 0)
+	else
+		-- move button offscreen
+		UT.log("savegame does not exists")
+		pos = vmath.vector3(3000, 1210, 0)
 	end
+	local node = gui.get_node(CO.GUI_RESUMEGAME)
+	gui.set_position(node, pos)
 end
 
 function final(self)
@@ -29,37 +36,24 @@ function on_message(self, message_id, message, sender)
 	-- Remove this function if not needed
 end
 
-local function screenLoadedNewResume()
-	MO.show(hash(CO.SCREEN_NEWRESUME))
+local function screenLoadedResumeGame()
+	msg.post("game:/game#game", CO.MESSAGE_RESUMEGAME)
+	MO.show(hash(CO.SCREEN_GAME))
+end
+
+local function screenLoadedNewGame()
+	msg.post("game:/game#game", CO.MESSAGE_NEWGAME)
+	MO.show(hash(CO.SCREEN_GAME))
 end
 
 function on_input(self, action_id, action)
 	local group = GO.group("group1", function()
-		GO.button(CO.GUI_PLAY, action_id, action, function(button)
-			MO.preload(CO.SCREEN_NEWRESUME, screenLoadedNewResume)
+		GO.button(CO.GUI_NEWGAME, action_id, action, function(button)
+			MO.preload(CO.SCREEN_GAME, screenLoadedNewGame)
 		end)
-		GO.button(CO.GUI_SETTINGS, action_id, action, function(button)
-			MO.show(hash(CO.SCREEN_SETTINGS))
+		GO.button(CO.GUI_RESUMEGAME, action_id, action, function(button)
+			MO.preload(CO.SCREEN_GAME, screenLoadedResumeGame)
 		end)
-		GO.button(CO.GUI_ABOUT, action_id, action, function(button)
-			local t = {board={}}
-			t.board[-1] = 1
-			t.board[0] = 2
-			t.board[1] = 3
-			UT.log("table contents")
-			pprint(t)
-			local filename = sys.get_save_file("paragonredux", "test")
-			sys.save(filename, t)
-			local loadedTable = sys.load(filename)
-			UT.log("table contents after load")
-			pprint(loadedTable)
-
-			MA.resetState()
-			MA.saveGame()
-			MA.saveSettings()
-		end)
-
-		
 	end)
 	return group.consumed
 end

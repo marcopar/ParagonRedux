@@ -20,8 +20,7 @@ function final(self)
 end
 
 function update(self, dt)
-	-- keep the flows going
-	FL.update(dt)
+
 end
 
 function on_message(self, message_id, message, sender)

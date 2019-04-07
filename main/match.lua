@@ -4,6 +4,7 @@ local CO = require "main.constants"
 local BO = require "main.board"
 local GL = require "main.glyphs"
 local PL = require "main.players"
+local UT = require "main.utils"
 
 local currentPlayer = CO.PLAYER1
 local swapEvery = 20
