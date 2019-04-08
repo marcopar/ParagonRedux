@@ -2,12 +2,14 @@ local CO = require "main.constants"
 local UT = require "main.utils"
 local MA = require "main.match"
 local ST = require "main.storage"
+local AI0 = require "main.ai0"
 local FL = require "ludobits.m.flow"
 
 local checkingSingleGlyph = false
 local swapping = false
 local checkingGlyphs = false
 local inputDisabled = false
+local aiRunning = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
@@ -129,6 +131,10 @@ function checkingGlyphsCompleted()
 	return not checkingGlyphs
 end
 
+local function isAIRunning()
+	return aiRunning
+end
+
 function checkAndSwapFlow()
 	checkMatchingGlyphs()
 	FL.until_true(checkingGlyphsCompleted)
@@ -140,10 +146,22 @@ function checkAndSwapFlow()
 	end
 	MA.setCurrentPlayer(MA.getNextPlayer())
 	MA.saveGame()
+	if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+		UT.log("invoking the AI")
+		summonTheAI()
+		FL.until_true(isAIRunning)
+	end
 	inputDisabled = false
 end
 
-local function processPlayerInput(currentPlayer, tile)
+function summonTheAI()
+	aiRunning = true
+	local tile = AI0.think(MA.getBoard().getBoardValues())
+	processPlayerInput(MA.getCurrentPlayer(), tile)
+	aiRunning = false
+end
+
+function processPlayerInput(currentPlayer, tile)
 	inputDisabled = true
 	if(MA.getBoard().isOnBoard(tile)) then
 		local cell = MA.getBoard().getCell(tile)
@@ -152,6 +170,7 @@ local function processPlayerInput(currentPlayer, tile)
 			UT.log(currentPlayer .. " orb placed")
 			MA.getBoard().setCell(tile, currentPlayer)
 			-- input reenabled inside the flow
+			-- player changed inside the flow
 			FL.start(checkAndSwapFlow)
 		else
 			inputDisabled = false
@@ -166,15 +185,12 @@ function on_input(self, action_id, action)
 		if(isInputDisabled()) then
 			return
 		end
-		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-			return
-		end
-		local x = action.screen_x
-		local y = action.screen_y
-		local pos = UT.getWorldPos(x, y)
-		local tile = UT.getTile(pos)
-		if(MA.getBoard().isOnBoard(tile)) then
-			currentPlayer = MA.getCurrentPlayer()
+		currentPlayer = MA.getCurrentPlayer()
+		if(MA.getPlayers().getType(currentPlayer) == CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+			local x = action.screen_x
+			local y = action.screen_y
+			local pos = UT.getWorldPos(x, y)
+			local tile = UT.getTile(pos)
 			processPlayerInput(currentPlayer, tile)
 		end
 	end
