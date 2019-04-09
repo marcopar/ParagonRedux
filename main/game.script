@@ -154,11 +154,15 @@ function checkAndSwapFlow()
 	inputDisabled = false
 end
 
-function summonTheAI()
-	aiRunning = true
-	local tile = AI0.think(MA.getBoard().getBoardValues())
+local function executeAI()
+	local tile = AI0.think(MA.getCurrentPlayer(), sMA.getBoard().getBoardValues())
 	processPlayerInput(MA.getCurrentPlayer(), tile)
 	aiRunning = false
+end
+
+function summonTheAI()
+	aiRunning = true
+	timer.delay(0.25, false, executeAI)
 end
 
 function processPlayerInput(currentPlayer, tile)
