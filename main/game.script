@@ -28,9 +28,15 @@ end
 function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
 		MA.newMatch()
+		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+			FL.start(executeAIFlow())
+		end
 	end
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
 		MA.loadGame()
+		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+			FL.start(executeAIFlow())
+		end
 	end
 	if(message_id == hash(CO.MESSAGE_LOADSETTINGS)) then
 		MA.loadSettings()
@@ -147,22 +153,25 @@ function checkAndSwapFlow()
 	MA.setCurrentPlayer(MA.getNextPlayer())
 	MA.saveGame()
 	if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-		UT.log("invoking the AI")
-		summonTheAI()
-		FL.until_true(isAIRunning)
+		UT.log("execute AI")
+		executeAIFlow()
 	end
 	inputDisabled = false
 end
 
 local function executeAI()
-	local tile = AI0.think(MA.getCurrentPlayer(), sMA.getBoard().getBoardValues())
-	processPlayerInput(MA.getCurrentPlayer(), tile)
+	local tile = AI0.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
+	if(tile ~= nil) then
+		processPlayerInput(MA.getCurrentPlayer(), tile)
+	end
 	aiRunning = false
 end
 
-function summonTheAI()
+function executeAIFlow()
 	aiRunning = true
-	timer.delay(0.25, false, executeAI)
+	-- fake AI thinking
+	timer.delay(0.01, false, executeAI)
+	FL.until_true(isAIRunning)
 end
 
 function processPlayerInput(currentPlayer, tile)
