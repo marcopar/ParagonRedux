@@ -10,6 +10,7 @@ local swapping = false
 local checkingGlyphs = false
 local inputDisabled = false
 local aiRunning = false
+local gameEnded = false
 
 function init(self)	
 	msg.post(".", "acquire_input_focus")
@@ -34,8 +35,12 @@ function on_message(self, message_id, message, sender)
 	end
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
 		MA.loadGame()
-		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-			FL.start(executeAIFlow())
+		if(checkEndGame()) then
+			handleEndGame()
+		else
+			if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+				FL.start(executeAIFlow())
+			end
 		end
 	end
 	if(message_id == hash(CO.MESSAGE_LOADSETTINGS)) then
@@ -70,11 +75,12 @@ end
 
 -- check for a match for the given player
 -- anyFound is set after finding a match in the freeze completed callback
+-- used to know if we need to generate a new glyph
 function checkMatchingGlyph(player, anyFound)
 	UT.log(player .. " check match")
 	checkingSingleGlyph = true
 	local glyph = MA.getPlayers().getGlyph(player)
-	local match = MA.getBoard().checkMatchingGlyph(player, glyph)
+	local match = MA.getBoard().checkMatchingGlyph(player, glyph, false)
 	if(match ~= nil) then
 		-- freeze the match on the board
 		UT.log(player .. " MATCH FOUND")
@@ -112,6 +118,22 @@ local function checkMatchingGlyphs()
 	end)
 end
 
+-- check if any player can complete a glyph
+-- if both can't, game ends
+function checkEndGame()
+	UT.log("check end game")
+	local glyph = MA.getPlayers().getGlyph(CO.PLAYER1)
+	local matchPossiblePlayer1 = MA.getBoard().checkMatchingGlyph(CO.PLAYER1, glyph, true)
+	glyph = MA.getPlayers().getGlyph(CO.PLAYER2)
+	local matchPossiblePlayer2 = MA.getBoard().checkMatchingGlyph(CO.PLAYER2, glyph, true)
+	return not (matchPossiblePlayer1 or matchPossiblePlayer2)
+end
+
+function handleEndGame()
+	UT.log("game ends")
+	gameEnded = true
+end
+
 -- callback for the swap board
 local function swapCompleted() 
 	swapping = false
@@ -137,8 +159,12 @@ function checkingGlyphsCompleted()
 	return not checkingGlyphs
 end
 
-local function isAIRunning()
+function isAIRunning()
 	return aiRunning
+end
+
+function isGameEnded()
+	return gameEnded
 end
 
 function checkAndSwapFlow()
@@ -152,9 +178,13 @@ function checkAndSwapFlow()
 	end
 	MA.setCurrentPlayer(MA.getNextPlayer())
 	MA.saveGame()
-	if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-		UT.log("execute AI")
-		executeAIFlow()
+	if(checkEndGame()) then
+		handleEndGame()
+	else
+		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+			UT.log("execute AI")
+			executeAIFlow()
+		end
 	end
 	inputDisabled = false
 end
@@ -195,7 +225,7 @@ end
 
 function on_input(self, action_id, action)
 	if action_id == hash("touch") and action.pressed then
-		if(isInputDisabled()) then
+		if(isInputDisabled() or isGameEnded()) then
 			return
 		end
 		currentPlayer = MA.getCurrentPlayer()

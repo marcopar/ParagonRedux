@@ -135,13 +135,21 @@ M.getOrbCount = function()
 	return {p1=p1Count, p2=p2Count, freezed=freezedCount, total=totalCount}
 end
 
-M.checkMatchingGlyphAtTile = function(origin, player, glyph)
+-- checkPotentialMatch treats empty slots as slots occupied by player
+-- used to check if player can still make a match
+M.checkMatchingGlyphAtTile = function(origin, player, glyph, checkPotentialMatch)
 	local matching = 0
 	for x = 1, CO.GLYPH_W do
 		for y = 1, CO.GLYPH_H do
 			local tx = origin.x + (x - 1)
 			local ty = origin.y - (y - 1)
-			if(glyph[x + (y - 1) * CO.GLYPH_H] == 1 and board.values[tx + ty * CO.BOARD_H] == player) then
+			local glyphValue = glyph[x + (y - 1) * CO.GLYPH_H]
+			local boardValue = board.values[tx + ty * CO.BOARD_H]
+			if(checkPotentialMatch and boardValue == nil) then
+				-- empty slot, simulate it's occupied by player
+				boardValue = player
+			end
+			if(glyphValue == 1 and boardValue == player) then
 				matching = matching + 1
 			end
 		end
@@ -149,15 +157,16 @@ M.checkMatchingGlyphAtTile = function(origin, player, glyph)
 	return (matching == CO.GLYPH_ORBS)
 end
 
-M.checkMatchingGlyph = function(player, glyph)
+-- checkPotentialMatch treats empty slots as slots occupied by player
+-- used to check if player can still make a match
+M.checkMatchingGlyph = function(player, glyph, checkPotentialMatch)
 	local tile = vmath.vector3()
-	-- TODO maybe the original explores the board following the rows instead of columns
 	-- explore from top left and match from top left as glyphs have the origin in top left
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX - 2 do
 		for y = CO.BOARD_YMAX, CO.BOARD_YMIN + 2, -1 do
 			tile.x = x;
 			tile.y = y;
-			if(M.checkMatchingGlyphAtTile(tile, player, glyph)) then
+			if(M.checkMatchingGlyphAtTile(tile, player, glyph, checkPotentialMatch)) then
 				return tile
 			end
 		end
