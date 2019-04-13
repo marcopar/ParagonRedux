@@ -60,7 +60,7 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  layer: "widget"
+  layer: ""
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -294,7 +294,7 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  layer: "widget"
+  layer: ""
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -426,12 +426,6 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
-}
-layers {
-  name: "widget"
-}
-layers {
-  name: "text"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

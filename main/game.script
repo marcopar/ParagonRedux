@@ -4,6 +4,7 @@ local MA = require "main.match"
 local ST = require "main.storage"
 local AI0 = require "main.ai0"
 local FL = require "ludobits.m.flow"
+local MO = require "monarch.monarch"
 
 local checkingSingleGlyph = false
 local swapping = false
@@ -132,6 +133,7 @@ end
 function handleEndGame()
 	UT.log("game ends")
 	gameEnded = true
+	MO.show(CO.SCREEN_ENDGAME_POPUP, {}, {player=1})
 end
 
 -- callback for the swap board
