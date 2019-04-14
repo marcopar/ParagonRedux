@@ -107,7 +107,7 @@ end
 
 M.resetState = function()
 	currentPlayer = CO.PLAYER1
-	swapEvery = 20
+	lastSwapAt = 0
 	player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
 	player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
 	BO.clearBoard()

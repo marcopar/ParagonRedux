@@ -3,11 +3,6 @@ local MO = require "monarch.monarch"
 local MA = require "main.match"
 local UT = require "main.utils"
 
-local function screenLoadedResumeGame()
-	msg.post("game:/game#game", CO.MESSAGE_RESUMEGAME)
-	MO.show(CO.SCREEN_GAME)
-end
-
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	-- randomize and discard the first values as they may be always be the same
@@ -22,6 +17,11 @@ function init(self)
 	else
 		msg.post("#", CO.SCREEN_MAINMENU)
 	end
+end
+
+function screenLoadedResumeGame()
+	msg.post("game:/game#game", CO.MESSAGE_RESUMEGAME)
+	MO.show(CO.SCREEN_GAME)
 end
 
 function update(self, dt)
