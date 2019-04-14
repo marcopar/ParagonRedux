@@ -1,10 +1,10 @@
-name: "endgame_popup"
+name: "information_popup"
 scale_along_z: 0
 embedded_instances {
   id: "gui"
   data: "components {\n"
   "  id: \"endgame_popup\"\n"
-  "  component: \"/gui/endgame_popup.gui\"\n"
+  "  component: \"/popup/information_popup.gui\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

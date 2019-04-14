@@ -1,4 +1,4 @@
-script: "/gui/endgame_popup.gui_script"
+script: "/popup/information_popup.gui_script"
 fonts {
   name: "font_big"
   font: "/gui/font_big.font"
@@ -51,7 +51,7 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "winner"
+  id: "border"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -105,12 +105,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: ""
-  id: "winner_fill"
+  id: "fill"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "winner"
+  parent: "border"
   layer: ""
   inherit_alpha: true
   slice9 {
@@ -159,9 +159,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "PLAYER X WINS!"
+  text: "TEXT"
   font: "font_medium"
-  id: "winner_text"
+  id: "text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -179,7 +179,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "winner_fill"
+  parent: "fill"
   layer: ""
   inherit_alpha: true
   alpha: 1.0

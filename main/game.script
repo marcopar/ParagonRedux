@@ -50,7 +50,7 @@ function on_message(self, message_id, message, sender)
 end
 
 -- callback after freezing a glyph
-local function freezeGlyphCompletedP2()
+function freezeGlyphCompletedP2()
 	UT.log("2 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
@@ -58,7 +58,7 @@ local function freezeGlyphCompletedP2()
 end
 
 -- callback after freezing a glyph
-local function freezeGlyphCompletedP1()
+function freezeGlyphCompletedP1()
 	UT.log("1 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
@@ -66,7 +66,7 @@ local function freezeGlyphCompletedP1()
 end
 
 -- returns the callback for the given player
-local function getFreezeGlyphCompletedCallback(player)
+function getFreezeGlyphCompletedCallback(player)
 	if(player == CO.PLAYER1) then
 		return freezeGlyphCompletedP1
 	elseif(player == CO.PLAYER2) then
@@ -100,12 +100,12 @@ function checkMatchingGlyph(player, anyFound)
 	end
 end
 
-local function isCheckingSingleGlyphOngoing()
+function isCheckingSingleGlyphOngoing()
 	return not checkingSingleGlyph
 end
 
 --check for a match for both players
-local function checkMatchingGlyphs()
+function checkMatchingGlyphs()
 	checkingGlyphs = true
 	UT.log("1-2 check match")
 	-- execute the checks one after the other and not in paralles as it would happen without using FLOW
@@ -133,11 +133,15 @@ end
 function handleEndGame()
 	UT.log("game ends")
 	gameEnded = true
-	MO.show(CO.SCREEN_ENDGAME_POPUP, {}, {player=1})
+	MO.show(CO.SCREEN_INFORMATION_POPUP, {}, 
+		{text="PLAYER x WINS", callback=function()
+			MO.back()
+		end}
+	)
 end
 
 -- callback for the swap board
-local function swapCompleted() 
+function swapCompleted() 
 	swapping = false
 	UT.log("swap completed")
 end
@@ -148,7 +152,7 @@ end
 
 --swap the board
 local function swapBoard()
-	UT.log("SWAP --------------")
+	UT.log("swap")
 	swapping = true
 	MA.getBoard().swapBoard(swapCompleted)
 end
