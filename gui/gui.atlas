@@ -4,6 +4,9 @@ images {
 images {
   image: "/assets/back.png"
 }
+images {
+  image: "/assets/menu.png"
+}
 margin: 0
 extrude_borders: 2
 inner_padding: 0
