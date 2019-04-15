@@ -125,11 +125,11 @@ M.getSettings = function()
 end
 
 M.setSettings = function(settings)
-	if(settings.currentPlayer ~= nil) then
-		currentPlayer = settings.currentPlayer
+	if(settings.swapEvery ~= nil) then
+		swapEvery = settings.swapEvery
 	end
-	if(settings.lastSwapAt ~= nil) then
-		lastSwapAt = settings.lastSwapAt
+	if(settings.marathon ~= nil) then
+		marathon = settings.marathon
 	end
 	if(settings.player1Type ~= nil) then
 		PL.setType(CO.PLAYER1, settings.player1Type)
@@ -140,7 +140,7 @@ M.setSettings = function(settings)
 end
 
 M.resetSettings = function()
-	lastSwapAt = 0
+	swapEvery = 20
 	marathon = false
 	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)

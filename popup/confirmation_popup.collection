@@ -1,10 +1,10 @@
-name: "information_popup"
+name: "confirmation_popup"
 scale_along_z: 0
 embedded_instances {
   id: "gui"
   data: "components {\n"
-  "  id: \"information_popup\"\n"
-  "  component: \"/popup/information_popup.gui\"\n"
+  "  id: \"confirmation_popup\"\n"
+  "  component: \"/popup/confirmation_popup.gui\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

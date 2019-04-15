@@ -3,6 +3,7 @@ local UT = require "main.utils"
 local MA = require "main.match"
 local ST = require "main.storage"
 local AI0 = require "main.ai0"
+local PO = require "popup.popup"
 local FL = require "ludobits.m.flow"
 local MO = require "monarch.monarch"
 
@@ -133,8 +134,8 @@ end
 function handleEndGame()
 	UT.log("game ends")
 	gameEnded = true
-	MO.show(CO.SCREEN_INFORMATION_POPUP, {}, 
-		{text="PLAYER x WINS", callback=function()
+	MO.show(PO.INFORMATION_POPUP, {}, 
+		{text="PLAYER x WINS", okCallback=function()
 			MO.back()
 		end}
 	)

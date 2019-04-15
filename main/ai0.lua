@@ -4,6 +4,7 @@ local CO = require "main.constants"
 local BO = require "main.board"
 local UT = require "main.utils"
 
+-- dumb AI, places an orb in the first empty cell
 M.think = function(player, boardValues)
 	local tile = vmath.vector3()
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
