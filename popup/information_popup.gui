@@ -128,8 +128,8 @@ nodes {
 }
 nodes {
   position {
-    x: 0.0
-    y: 0.0
+    x: 540.0
+    y: 960.0
     z: 0.0
     w: 1.0
   }
@@ -179,7 +179,6 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "fill"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
