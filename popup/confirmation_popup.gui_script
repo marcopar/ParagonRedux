@@ -6,6 +6,10 @@ function init(self)
 	local data = MO.data(CO.SCREEN_CONFIRMATION_POPUP)
 	local text = gui.get_node(CO.GUI_TEXT)
 	gui.set_text(text, data.text)
+	local ok = gui.get_node(CO.GUI_OK)
+	gui.set_text(ok, data.ok)
+	local cancel = gui.get_node(CO.GUI_CANCEL)
+	gui.set_text(cancel, data.cancel)
 end
 
 function final(self)
