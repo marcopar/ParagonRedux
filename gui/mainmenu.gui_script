@@ -59,8 +59,11 @@ function on_input(self, action_id, action)
 			MA.saveGame()
 			MA.saveSettings()
 
-			MO.show(PO.INFORMATION_POPUP, {}, 
-			{text="PLAYER x WINS", okCallback=function()
+			MO.show(PO.CONFIRMATION_POPUP, {}, 
+			{text="PLAYER x WINS", ok="Aok", cancel="Bcancel", okCallback=function()
+				MO.back()
+			end,
+			cancelCallback=function()
 				MO.back()
 			end}
 		)
