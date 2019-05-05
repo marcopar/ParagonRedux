@@ -28,30 +28,8 @@ function update(self, dt)
 
 end
 
-function on_message(self, message_id, message, sender)
-	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
-		MA.newMatch()
-		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-			FL.start(executeAIFlow())
-		end
-	end
-	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
-		MA.loadGame()
-		if(checkEndGame()) then
-			handleEndGame()
-		else
-			if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-				FL.start(executeAIFlow())
-			end
-		end
-	end
-	if(message_id == hash(CO.MESSAGE_LOADSETTINGS)) then
-		MA.loadSettings()
-	end
-end
-
 -- callback after freezing a glyph
-function freezeGlyphCompletedP2()
+local function freezeGlyphCompletedP2()
 	UT.log("2 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
@@ -59,7 +37,7 @@ function freezeGlyphCompletedP2()
 end
 
 -- callback after freezing a glyph
-function freezeGlyphCompletedP1()
+local function freezeGlyphCompletedP1()
 	UT.log("1 freeze completed")
 	-- recheck for other matches, can happen after a board swapBoard
 	-- pass back true so we will generate a new glyph
@@ -67,7 +45,7 @@ function freezeGlyphCompletedP1()
 end
 
 -- returns the callback for the given player
-function getFreezeGlyphCompletedCallback(player)
+local function getFreezeGlyphCompletedCallback(player)
 	if(player == CO.PLAYER1) then
 		return freezeGlyphCompletedP1
 	elseif(player == CO.PLAYER2) then
@@ -78,7 +56,7 @@ end
 -- check for a match for the given player
 -- anyFound is set after finding a match in the freeze completed callback
 -- used to know if we need to generate a new glyph
-function checkMatchingGlyph(player, anyFound)
+local function checkMatchingGlyph(player, anyFound)
 	UT.log(player .. " check match")
 	checkingSingleGlyph = true
 	local glyph = MA.getPlayers().getGlyph(player)
@@ -101,12 +79,12 @@ function checkMatchingGlyph(player, anyFound)
 	end
 end
 
-function isCheckingSingleGlyphOngoing()
+local function isCheckingSingleGlyphOngoing()
 	return not checkingSingleGlyph
 end
 
 --check for a match for both players
-function checkMatchingGlyphs()
+local function checkMatchingGlyphs()
 	checkingGlyphs = true
 	UT.log("1-2 check match")
 	-- execute the checks one after the other and not in paralles as it would happen without using FLOW
@@ -122,7 +100,7 @@ end
 
 -- check if any player can complete a glyph
 -- if both can't, game ends
-function checkEndGame()
+local function checkEndGame()
 	UT.log("check end game")
 	local glyph = MA.getPlayers().getGlyph(CO.PLAYER1)
 	local matchPossiblePlayer1 = MA.getBoard().checkMatchingGlyph(CO.PLAYER1, glyph, true)
@@ -131,7 +109,7 @@ function checkEndGame()
 	return not (matchPossiblePlayer1 or matchPossiblePlayer2)
 end
 
-function handleEndGame()
+local function handleEndGame()
 	UT.log("game ends")
 	gameEnded = true
 	MO.show(PO.INFORMATION_POPUP, {}, 
@@ -142,12 +120,12 @@ function handleEndGame()
 end
 
 -- callback for the swap board
-function swapCompleted() 
+local function swapCompleted() 
 	swapping = false
 	UT.log("swap completed")
 end
 
-function isSwapCompleted()
+local function isSwapCompleted()
 	return not swapping
 end
 
@@ -158,23 +136,30 @@ local function swapBoard()
 	MA.getBoard().swapBoard(swapCompleted)
 end
 
-function isInputDisabled()
+local function isInputDisabled()
 	return inputDisabled
 end
 
-function checkingGlyphsCompleted()
+local function checkingGlyphsCompleted()
 	return not checkingGlyphs
 end
 
-function isAIRunning()
+local function isAIRunning()
 	return aiRunning
 end
 
-function isGameEnded()
+local function isGameEnded()
 	return gameEnded
 end
 
-function checkAndSwapFlow()
+local function executeAIFlow()
+	aiRunning = true
+	-- fake AI thinking
+	timer.delay(0.01, false, executeAI)
+	FL.until_true(isAIRunning)
+end
+
+local function checkAndSwapFlow()
 	checkMatchingGlyphs()
 	FL.until_true(checkingGlyphsCompleted)
 	if(MA.isSwapTriggered()) then
@@ -196,22 +181,7 @@ function checkAndSwapFlow()
 	inputDisabled = false
 end
 
-local function executeAI()
-	local tile = AI0.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
-	if(tile ~= nil) then
-		processPlayerInput(MA.getCurrentPlayer(), tile)
-	end
-	aiRunning = false
-end
-
-function executeAIFlow()
-	aiRunning = true
-	-- fake AI thinking
-	timer.delay(0.01, false, executeAI)
-	FL.until_true(isAIRunning)
-end
-
-function processPlayerInput(currentPlayer, tile)
+local function processPlayerInput(currentPlayer, tile)
 	inputDisabled = true
 	if(MA.getBoard().isOnBoard(tile)) then
 		local cell = MA.getBoard().getCell(tile)
@@ -227,6 +197,36 @@ function processPlayerInput(currentPlayer, tile)
 		end			
 	else
 		inputDisabled = false
+	end
+end
+
+function executeAI()
+	local tile = AI0.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
+	if(tile ~= nil) then
+		processPlayerInput(MA.getCurrentPlayer(), tile)
+	end
+	aiRunning = false
+end
+
+function on_message(self, message_id, message, sender)
+	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
+		MA.newMatch()
+		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+			FL.start(executeAIFlow())
+		end
+	end
+	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
+		MA.loadGame()
+		if(checkEndGame()) then
+			handleEndGame()
+		else
+			if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
+				FL.start(executeAIFlow())
+			end
+		end
+	end
+	if(message_id == hash(CO.MESSAGE_LOADSETTINGS)) then
+		MA.loadSettings()
 	end
 end
 
