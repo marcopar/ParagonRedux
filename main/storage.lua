@@ -2,24 +2,24 @@ local M = {}
 
 local storage = {}
 
-M.url2key = function(url)
+function M.url2key(url)
 	return tostring(url.socket) .. ":" .. tostring(url.path) .. "#" .. tostring(url.fragment)
 end
 
-M.put = function(key, value)
+function M.put(key, value)
 	storage[key] = value
 end
 
-M.get = function(key)
+function M.get(key)
 	local value = storage[key]
 	return value
 end
 
-M.remove = function(key)
+function M.remove(key)
 	storage[key] = nil
 end
 
-M.clear = function(key)
+function M.clear(key)
 	storage = {}
 end
 

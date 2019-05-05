@@ -43,7 +43,7 @@ M.GLYPHS = {
 	{1,0,1,0,1,0,1,0,1}
 }
 
-M.getRandomGlyph = function()
+function M.getRandomGlyph()
 	local n = math.random(1, table.getn(M.GLYPHS))
 	return M.GLYPHS[n]
 end

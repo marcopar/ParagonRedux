@@ -5,7 +5,7 @@ local BO = require "main.board"
 local UT = require "main.utils"
 
 -- dumb AI, places an orb in the first empty cell
-M.think = function(player, boardValues)
+function M.think(player, boardValues)
 	local tile = vmath.vector3()
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
 		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do

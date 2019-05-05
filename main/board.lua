@@ -6,33 +6,33 @@ local ST = require "main.storage"
 
 local board = {sprites={}, values={}}
 
-M.getCellIndexInBoard = function(tile)
+function M.getCellIndexInBoard(tile)
 	-- tile x, y can be negative as the tilemap is centered in the world origin, so the offset in the array can also be negative (not an issue in lua 8-))
 	return tile.x + tile.y * CO.BOARD_H
 end
 
-M.isOnBoard =  function(tile) 
+function M.isOnBoard(tile) 
 	if(tile.x >= CO.BOARD_XMIN and tile.x <= CO.BOARD_XMAX and tile.y >= CO.BOARD_YMIN and tile.y <=CO.BOARD_YMAX) then
 		return true
 	end
 	return false
 end
 
-M.setCell = function(tile, player)
+function M.setCell(tile, player)
 	local orb = UT.createOrb(tile, player, 0.5)
 	local cellPos = M.getCellIndexInBoard(tile)
 	board.sprites[cellPos] = orb
 	board.values[cellPos] = player
 end
 
-M.freezeCell = function(tile, delay, callback)
+function M.freezeCell(tile, delay, callback)
 	local cellPos = M.getCellIndexInBoard(tile)
 	local orb = board.sprites[cellPos]
 	UT.changeOrbType(orb, CO.FREEZED, delay, callback)
 	board.values[cellPos] = CO.FREEZED	
 end
 
-M.clearCell = function(tile)
+function M.clearCell(tile)
 	local cellPos = M.getCellIndexInBoard(tile)
 	local orb = board.sprites[cellPos]
 	UT.deleteOrb(orb)
@@ -40,7 +40,7 @@ M.clearCell = function(tile)
 	board.values[cellPos] = nil
 end
 
-M.clearCellAnimated = function(tile, delay, callback)
+function M.clearCellAnimated(tile, delay, callback)
 	local cellPos = M.getCellIndexInBoard(tile)
 	local orb = board.sprites[cellPos]
 	UT.deleteOrbAnimated(orb, delay, callback)
@@ -48,7 +48,7 @@ M.clearCellAnimated = function(tile, delay, callback)
 	board.values[cellPos] = nil
 end
 
-M.swapCell = function(tile, callback)
+function M.swapCell(tile, callback)
 	local cellPos = M.getCellIndexInBoard(tile)
 	local orb = board.sprites[cellPos]
 	local value = board.values[cellPos]
@@ -61,12 +61,12 @@ M.swapCell = function(tile, callback)
 	end
 end
 
-M.getCell = function(tile)
+function M.getCell(tile)
 	local cellPos = M.getCellIndexInBoard(tile)
 	return board.values[cellPos]
 end
 
-M.swapBoard = function(endCallback)
+function M.swapBoard(endCallback)
 	local tile = vmath.vector3()
 	local counters = M.getOrbCount()
 	local swapped = 0
@@ -97,7 +97,7 @@ M.swapBoard = function(endCallback)
 	end
 end
 
-M.clearBoard = function()
+function M.clearBoard()
 	local tile = vmath.vector3()
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
 		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do
@@ -109,7 +109,7 @@ M.clearBoard = function()
 	ST.clear()
 end
 
-M.getOrbCount = function()
+function M.getOrbCount()
 	local tile = vmath.vector3()
 	local totalCount = 0
 	local p1Count = 0
@@ -137,7 +137,7 @@ end
 
 -- checkPotentialMatch treats empty slots as slots occupied by player
 -- used to check if player can still make a match
-M.checkMatchingGlyphAtTile = function(origin, player, glyph, checkPotentialMatch)
+function M.checkMatchingGlyphAtTile(origin, player, glyph, checkPotentialMatch)
 	local matching = 0
 	for x = 1, CO.GLYPH_W do
 		for y = 1, CO.GLYPH_H do
@@ -159,7 +159,7 @@ end
 
 -- checkPotentialMatch treats empty slots as slots occupied by player
 -- used to check if player can still make a match
-M.checkMatchingGlyph = function(player, glyph, checkPotentialMatch)
+function M.checkMatchingGlyph(player, glyph, checkPotentialMatch)
 	local tile = vmath.vector3()
 	-- explore from top left and match from top left as glyphs have the origin in top left
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX - 2 do
@@ -174,7 +174,7 @@ M.checkMatchingGlyph = function(player, glyph, checkPotentialMatch)
 	return nil
 end
 
-M.setGlyphCompleted = function(origin, glyph, marathon, endCallback)
+function M.setGlyphCompleted(origin, glyph, marathon, endCallback)
 	local delay = 1
 	for x = 1, CO.GLYPH_W do
 		for y = 1, CO.GLYPH_H do
@@ -199,7 +199,7 @@ M.setGlyphCompleted = function(origin, glyph, marathon, endCallback)
 	end
 end
 
-M.getBoardValues = function()
+function M.getBoardValues()
 	local copy = {}
 	for k,v in pairs(board.values) do
 		copy[k] = v
@@ -207,7 +207,7 @@ M.getBoardValues = function()
 	return copy
 end
 
-M.setBoardValues = function(values)
+function M.setBoardValues(values)
 	M.clearBoard()
 	local tile = vmath.vector3()
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do

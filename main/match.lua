@@ -11,18 +11,18 @@ local swapEvery = 20
 local lastSwapAt = 0
 local marathon = false
 
-M.newGlyph = function(player)
+function M.newGlyph(player)
 	PL.setGlyph(player, GL.getRandomGlyph())
 end
 
-M.newMatch = function()
+function M.newMatch()
 	M.resetState()
 	M.deleteGame()
 	M.newGlyph(CO.PLAYER1)
 	M.newGlyph(CO.PLAYER2)
 end
 
-M.getNextPlayer = function()
+function M.getNextPlayer()
 	if(currentPlayer == CO.PLAYER1) then
 		return CO.PLAYER2
 	else
@@ -30,44 +30,44 @@ M.getNextPlayer = function()
 	end
 end
 
-M.getCurrentPlayer = function()
+function M.getCurrentPlayer()
 	return currentPlayer
 end
 
-M.setCurrentPlayer = function(player)
+function M.setCurrentPlayer(player)
 	currentPlayer = player
 end
 
-M.getBoard = function()
+function M.getBoard()
 	return BO
 end
 
-M.getPlayers= function()
+function M.getPlayers()
 	return PL
 end
 
-M.isSwapTriggered = function()
+function M.isSwapTriggered()
 	local orbCount = BO.getOrbCount().total
 	return (swapEvery > 0 and lastSwapAt ~= orbCount and orbCount % swapEvery == 0)
 end
 
-M.isMarathon = function()
+function M.isMarathon()
 	return marathon
 end
 
-M.setMarathon = function(value)
+function M.setMarathon(value)
 	marathon = value
 end
 
-M.setSwapEvery = function(value)
+function M.setSwapEvery(value)
 	swapEvery = value
 end
 
-M.getSwapEvery = function()
+function M.getSwapEvery()
 	return swapEvery
 end
 
-M.getState = function()
+function M.getState()
 	local state = {currentPlayer=nil,lastSwapAt=nil,
 	board=nil,player1Glyph=nil,player2Glyph=nil,
 	player1Type=nil, player2Type=nil}
@@ -81,7 +81,7 @@ M.getState = function()
 	return state
 end
 
-M.setState = function(state)
+function M.setState(state)
 	if(state.currentPlayer ~= nil) then
 		currentPlayer = state.currentPlayer
 	end
@@ -105,7 +105,7 @@ M.setState = function(state)
 	end
 end
 
-M.resetState = function()
+function M.resetState()
 	currentPlayer = CO.PLAYER1
 	lastSwapAt = 0
 	player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
@@ -115,7 +115,7 @@ M.resetState = function()
 	PL.clearGlyph(CO.PLAYER2)
 end
 
-M.getSettings = function()
+function M.getSettings()
 	local settings = {swapEvery=nil,marathon=nil, player1Type=nil, player2Type=nil}
 	settings.swapEvery = swapEvery
 	settings.marathon = marathon
@@ -124,7 +124,7 @@ M.getSettings = function()
 	return settings
 end
 
-M.setSettings = function(settings)
+function M.setSettings(settings)
 	if(settings.swapEvery ~= nil) then
 		swapEvery = settings.swapEvery
 	end
@@ -139,14 +139,14 @@ M.setSettings = function(settings)
 	end
 end
 
-M.resetSettings = function()
+function M.resetSettings()
 	swapEvery = 20
 	marathon = false
 	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 end
 
-M.saveGame = function()
+function M.saveGame()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local state = M.getState()
 	local settings = M.getSettings()
@@ -156,13 +156,13 @@ M.saveGame = function()
 	sys.save(filename, file)
 end
 
-M.deleteGame = function()
+function M.deleteGame()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local file = {}
 	sys.save(filename, file)
 end
 
-M.loadGame = function()
+function M.loadGame()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local file = sys.load(filename)
 	if(file.state ~= nil and file.settings ~= nil) then
@@ -173,7 +173,7 @@ M.loadGame = function()
 	return false
 end
 
-M.isSaveGameExists = function()
+function M.isSaveGameExists()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local file = sys.load(filename)
 	if(file.state ~= nil and file.settings ~= nil) then
@@ -182,7 +182,7 @@ M.isSaveGameExists = function()
 	return false
 end
 
-M.saveSettings = function()
+function M.saveSettings()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local settings = M.getSettings()
 	local file = {settings=nil}
@@ -190,13 +190,13 @@ M.saveSettings = function()
 	sys.save(filename, file)
 end
 
-M.deleteSettings = function()
+function M.deleteSettings()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local file = {}
 	sys.save(filename, file)
 end
 
-M.loadSettings = function()
+function M.loadSettings()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local file = sys.load(filename)
 	if(file.settings ~= nil) then
@@ -206,7 +206,7 @@ M.loadSettings = function()
 	return false
 end
 
-M.isSettingsExists = function()
+function M.isSettingsExists()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local file = sys.load(filename)
 	if(file.settings ~= nil) then

@@ -4,20 +4,20 @@ local CO = require "main.constants"
 local RE = require "rendercam.rendercam"
 local ST = require "main.storage"
 
-M.getTile = function(pos)
+function M.getTile(pos)
 	local tx = math.floor(pos.x / CO.TILE_W) + 1
 	local ty = math.floor(pos.y / CO.TILE_H) + 1
 	M.log("####################### " ..tx .. ", " .. ty)
 	return vmath.vector3(tx, ty, 0)
 end
 
-M.getTileCenterPosition = function(tile)
+function M.getTileCenterPosition(tile)
 	local orbX = tile.x * CO.TILE_W - CO.TILE_W / 2;
 	local orbY = tile.y * CO.TILE_H - CO.TILE_H / 2;
 	return vmath.vector3(orbX, orbY, 1)		
 end
 
-M.createOrb = function(tile, orbType, time, easing)
+function M.createOrb(tile, orbType, time, easing)
 	local orbPos = M.getTileCenterPosition(tile)
 	local orb = factory.create("#orb_factory", orbPos, nil, nil)
 	sprite.play_flipbook(orb, CO.ORBS[orbType])
@@ -38,14 +38,14 @@ local function anim_changeOrbType_end(self, orb, property)
 	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTELASTIC, 0.5, 0, callback)
 end
 
-M.changeOrbType = function(orb, orbType, delay, callback)
+function M.changeOrbType(orb, orbType, delay, callback)
 	local url = msg.url(nil, orb, nil) 
 	ST.put(ST.url2key(url) .. "orbType", orbType)
 	ST.put(ST.url2key(url) .. "callback", callback)
 	go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 0.1, go.EASING_LINEAR, 0.2, delay * 0.5, anim_changeOrbType_end)
 end
 
-M.deleteOrb = function(orb)
+function M.deleteOrb(orb)
 	if(orb == nil) then
 		return
 	end
@@ -61,17 +61,17 @@ local function anim_deleteOrbAnimated_end(self, orb, property)
 end
 
 -- animated delete
-M.deleteOrbAnimated = function(orb, delay, callback)
+function M.deleteOrbAnimated(orb, delay, callback)
 	local url = msg.url(nil, orb, nil)
 	ST.put(ST.url2key(url) .. "callback", callback)
 	go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 0.1, go.EASING_LINEAR, 0.2, delay * 0.5, anim_deleteOrbAnimated_end)
 end
 
-M.getWorldPos = function(x, y)
+function M.getWorldPos(x, y)
 	return RE.screen_to_world_2d(x, y)		
 end
 
-M.indexOf = function(table, value)
+function M.indexOf(table, value)
 	for k,v in pairs(table) do
 		if(v == value) then
 			return k
@@ -80,7 +80,7 @@ M.indexOf = function(table, value)
 	return -1
 end
 
-M.log = function(msg) 
+function M.log(msg) 
 	print(os.clock() .. ": " .. msg )
 end
 

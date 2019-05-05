@@ -8,15 +8,15 @@ local players = {
 	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN }
 }
 
-M.setType = function(player, type)
+function M.setType(player, type)
 	players[player].type = type
 end
 
-M.getType = function(player)
+function M.getType(player)
 	return players[player].type
 end
 
-M.setGlyph = function(player, glyph)
+function M.setGlyph(player, glyph)
 	local xmin = 0
 	local ymax = 0
 	if(player == CO.PLAYER1) then
@@ -39,11 +39,11 @@ M.setGlyph = function(player, glyph)
 	players[player].glyph = glyph
 end
 
-M.getGlyph = function(player)
+function M.getGlyph(player)
 	return players[player].glyph
 end
 
-M.clearGlyph = function(player)
+function M.clearGlyph(player)
 	local xmin = 0
 	local ymax = 0
 	if(player == CO.PLAYER1) then
