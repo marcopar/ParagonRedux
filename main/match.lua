@@ -68,15 +68,21 @@ function M.getSwapEvery()
 end
 
 function M.getState()
-	local state = {currentPlayer=nil,lastSwapAt=nil,
-	board=nil,player1Glyph=nil,player2Glyph=nil,
-	player1Type=nil, player2Type=nil}
+	local state = {
+		currentPlayer=nil, lastSwapAt=nil,
+		board=nil, player1Glyph=nil, player2Glyph=nil,
+		player1Type=nil, player2Type=nil, 
+		player1Points=0, player2Points=0
+	}
+	
 	state.currentPlayer = currentPlayer
 	state.lastSwapAt = lastSwapAt
-	state.player1Type = player1Type
-	state.player2Type = player2Type
+	state.player1Type = PL.getType(CO.PLAYER1)
+	state.player2Type = PL.getType(CO.PLAYER2)
 	state.player1Glyph = PL.getGlyph(CO.PLAYER1)
 	state.player2Glyph = PL.getGlyph(CO.PLAYER2)
+	state.player1Points = PL.getPoints(CO.PLAYER1)
+	state.player2Points = PL.getPoints(CO.PLAYER2)
 	state.board = BO.getBoardValues()
 	return state
 end
@@ -89,10 +95,16 @@ function M.setState(state)
 		lastSwapAt = state.lastSwapAt
 	end
 	if(state.player1Type ~= nil) then
-		player1Type = state.player1Type
+		PL.setType(CO.PLAYER1, state.player1Type)
 	end
 	if(state.player2Type ~= nil) then
-		player2Type = state.player2Type
+		PL.setType(CO.PLAYER2, state.player2Type)
+	end
+	if(state.player1Points ~= nil) then
+		PL.setPoints(CO.PLAYER1, state.player1Points)
+	end
+	if(state.player2Points ~= nil) then
+		PL.setPoints(CO.PLAYER2, state.player2Points)
 	end
 	if(state.player1Glyph ~= nil) then
 		PL.setGlyph(CO.PLAYER1, state.player1Glyph)
@@ -108,15 +120,19 @@ end
 function M.resetState()
 	currentPlayer = CO.PLAYER1
 	lastSwapAt = 0
-	player1Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
-	player2Type = CO.SETTINGS_PLAYER_TYPE_HUMAN
+	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)
+	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 	BO.clearBoard()
 	PL.clearGlyph(CO.PLAYER1)
 	PL.clearGlyph(CO.PLAYER2)
+	PL.setPoints(CO.PLAYER1, 0)
+	PL.setPoints(CO.PLAYER2, 0)
 end
 
 function M.getSettings()
-	local settings = {swapEvery=nil,marathon=nil, player1Type=nil, player2Type=nil}
+	local settings = {
+		swapEvery=nil, marathon=nil, player1Type=nil, player2Type=nil,
+	}
 	settings.swapEvery = swapEvery
 	settings.marathon = marathon
 	settings.player1Type = PL.getType(CO.PLAYER1)

@@ -56,7 +56,7 @@ end
 -- check for a match for the given player
 -- anyFound is set after finding a match in the freeze completed callback
 -- used to know if we need to generate a new glyph
-local function checkMatchingGlyph(player, anyFound)
+function checkMatchingGlyph(player, anyFound)
 	UT.log(player .. " check match")
 	checkingSingleGlyph = true
 	local glyph = MA.getPlayers().getGlyph(player)

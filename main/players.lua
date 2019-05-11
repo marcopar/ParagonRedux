@@ -4,9 +4,17 @@ local CO = require "main.constants"
 local UT = require "main.utils"
 
 local players = { 
-	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN }, 
-	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN }
+	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN, points=0 }, 
+	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN, points=0 }
 }
+
+function M.setPoints(player, points)
+	players[player].points = points
+end
+
+function M.getPoints(player)
+	return players[player].points
+end
 
 function M.setType(player, type)
 	players[player].type = type
