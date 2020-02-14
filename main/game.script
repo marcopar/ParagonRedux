@@ -201,6 +201,7 @@ local function processPlayerInput(currentPlayer, tile)
 end
 
 function executeAI()
+	UT.log("execute ai")
 	local tile = AI0.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
 	if(tile ~= nil) then
 		processPlayerInput(MA.getCurrentPlayer(), tile)
@@ -210,12 +211,14 @@ end
 
 function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
+		UT.log("new game")
 		MA.newMatch()
 		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
 			FL.start(executeAIFlow())
 		end
 	end
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
+		UT.log("resume game")
 		MA.loadGame()
 		if(checkEndGame()) then
 			handleEndGame()

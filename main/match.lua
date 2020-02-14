@@ -18,6 +18,7 @@ end
 function M.newMatch()
 	M.resetState()
 	M.deleteGame()
+	M.loadSettings()
 	M.newGlyph(CO.PLAYER1)
 	M.newGlyph(CO.PLAYER2)
 end
@@ -156,6 +157,7 @@ function M.setSettings(settings)
 end
 
 function M.resetSettings()
+	UT.log("reset settings")
 	swapEvery = 20
 	marathon = false
 	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
@@ -169,12 +171,16 @@ function M.saveGame()
 	local file = {state = nil, settings = nil}
 	file.state = state
 	file.settings = settings
+	UT.log("saveGame")
+	pprint(file)
 	sys.save(filename, file)
 end
 
 function M.deleteGame()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local file = {}
+	UT.log("deleteGame")
+	pprint(file)
 	sys.save(filename, file)
 end
 
@@ -184,6 +190,8 @@ function M.loadGame()
 	if(file.state ~= nil and file.settings ~= nil) then
 		M.setState(file.state)
 		M.setSettings(file.settings)
+		UT.log("loadGame")
+		pprint(file)
 		return true
 	end
 	return false
@@ -203,12 +211,16 @@ function M.saveSettings()
 	local settings = M.getSettings()
 	local file = {settings=nil}
 	file.settings = settings
+	UT.log("saveSettings")
+	pprint(file)
 	sys.save(filename, file)
 end
 
 function M.deleteSettings()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local file = {}
+	UT.log("deleteSettings")
+	pprint(file)
 	sys.save(filename, file)
 end
 
@@ -216,6 +228,8 @@ function M.loadSettings()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local file = sys.load(filename)
 	if(file.settings ~= nil) then
+		UT.log("loadSettings")
+		pprint(file)
 		M.setSettings(file.settings)
 		return true
 	end
