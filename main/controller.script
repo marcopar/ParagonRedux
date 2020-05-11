@@ -5,18 +5,13 @@ local UT = require "main.utils"
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	-- randomize and discard the first values as they may be always be the same
+	-- randomize and discard the first values as they may be always be the same....god knows why
 	math.randomseed(os.time())
 	math.random()
 	math.random()
 	math.random()
 	
-	if(MA.isSaveGameExists()) then
-		UT.log("savegame exists")
-		MO.preload(CO.SCREEN_GAME, screenLoadedResumeGame)
-	else
-		msg.post("#", CO.SCREEN_MAINMENU)
-	end
+	msg.post("#", CO.SCREEN_MAINMENU)
 end
 
 function screenLoadedResumeGame()

@@ -70,14 +70,12 @@ end
 
 function M.getState()
 	local state = {
-		swapEvery=nil, marathon=nil, 
 		currentPlayer=nil, lastSwapAt=nil,
 		board=nil, player1Glyph=nil, player2Glyph=nil,
 		player1Type=nil, player2Type=nil, 
 		player1Points=0, player2Points=0
 	}
-	state.swapEvery = swapEvery
-	state.marathon = marathon
+	
 	state.currentPlayer = currentPlayer
 	state.lastSwapAt = lastSwapAt
 	state.player1Type = PL.getType(CO.PLAYER1)
@@ -91,12 +89,6 @@ function M.getState()
 end
 
 function M.setState(state)
-	if(state.swapEvery ~= nil) then
-		swapEvery = state.swapEvery
-	end
-	if(state.marathon ~= nil) then
-		marathon = state.marathon
-	end
 	if(state.currentPlayer ~= nil) then
 		currentPlayer = state.currentPlayer
 	end
@@ -127,8 +119,6 @@ function M.setState(state)
 end
 
 function M.resetState()
-	swapEvery = 20
-	marathon = false
 	currentPlayer = CO.PLAYER1
 	lastSwapAt = 0
 	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)
@@ -142,16 +132,36 @@ end
 
 function M.getSettings()
 	local settings = {
+		swapEvery=nil, marathon=nil, player1Type=nil, player2Type=nil,
 	}
+	settings.swapEvery = swapEvery
+	settings.marathon = marathon
+	settings.player1Type = PL.getType(CO.PLAYER1)
+	settings.player2Type = PL.getType(CO.PLAYER2)
 	return settings
 end
 
 function M.setSettings(settings)
-
+	if(settings.swapEvery ~= nil) then
+		swapEvery = settings.swapEvery
+	end
+	if(settings.marathon ~= nil) then
+		marathon = settings.marathon
+	end
+	if(settings.player1Type ~= nil) then
+		PL.setType(CO.PLAYER1, settings.player1Type)
+	end
+	if(settings.player2Type ~= nil) then
+		PL.setType(CO.PLAYER2, settings.player2Type)
+	end
 end
 
 function M.resetSettings()
 	UT.log("reset settings")
+	swapEvery = 20
+	marathon = false
+	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
+	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 end
 
 function M.saveGame()
