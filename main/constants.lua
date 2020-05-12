@@ -57,6 +57,7 @@ M.GUI_CANCEL = "cancel"
 M.GUI_WINDOW = "window"
 M.GUI_OKBUTTON = "okbutton"
 M.GUI_CANCELBUTTON = "cancelbutton"
+M.GUI_START = "start"
 
 M.MESSAGE_NEWGAME = "NEWGAME"
 M.MESSAGE_RESUMEGAME = "RESUMEGAME"
