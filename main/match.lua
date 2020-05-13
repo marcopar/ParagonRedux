@@ -18,7 +18,6 @@ end
 function M.newMatch()
 	M.resetState()
 	M.deleteGame()
-	M.loadSettings()
 	M.newGlyph(CO.PLAYER1)
 	M.newGlyph(CO.PLAYER2)
 end
@@ -127,12 +126,8 @@ function M.setState(state)
 end
 
 function M.resetState()
-	swapEvery = 20
-	marathon = false
 	currentPlayer = CO.PLAYER1
 	lastSwapAt = 0
-	PL.setType(CO.PLAYER2, CO.SETTINGS_PLAYER_TYPE_HUMAN)
-	PL.setType(CO.PLAYER1, CO.SETTINGS_PLAYER_TYPE_HUMAN)
 	BO.clearBoard()
 	PL.clearGlyph(CO.PLAYER1)
 	PL.clearGlyph(CO.PLAYER2)

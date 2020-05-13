@@ -43,22 +43,6 @@ function on_input(self, action_id, action)
 			MO.show(hash(CO.SCREEN_SETTINGS))
 		end)
 		GO.button(CO.GUI_ABOUT, action_id, action, function(button)
-			local t = {board={}}
-			t.board[-1] = 1
-			t.board[0] = 2
-			t.board[1] = 3
-			UT.log("table contents")
-			pprint(t)
-			local filename = sys.get_save_file("paragonredux", "test")
-			sys.save(filename, t)
-			local loadedTable = sys.load(filename)
-			UT.log("table contents after load")
-			pprint(loadedTable)
-
-			MA.resetState()
-			MA.saveGame()
-			MA.saveSettings()
-
 			MO.show(PO.CONFIRMATION_POPUP, {}, 
 			{text="PLAYER x WINS", ok="Aok", cancel="Bcancel", okCallback=function()
 				MO.back()
