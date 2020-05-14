@@ -1,6 +1,7 @@
 local CO = require "main.constants"
 local MO = require "monarch.monarch"
 local GO = require "gooey.gooey"
+local MA = require "main.match"
 
 function init(self)
 	GO.acquire_input()
@@ -18,7 +19,15 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	
+	if(message_id == hash(CO.MESSAGE_MATCHFOUND)) then
+		local points1 = MA.getPlayers().getPoints(CO.PLAYER1)
+		local text1 = gui.get_node(CO.GUI_PLAYER1POINTS .. "_text")
+		gui.set_text(text1, "" .. points1)
+		
+		local points2 = MA.getPlayers().getPoints(CO.PLAYER2)
+		local text2 = gui.get_node(CO.GUI_PLAYER2POINTS .. "_text")
+		gui.set_text(text2, "" .. points2)
+	end
 end
 
 function on_input(self, action_id, action)

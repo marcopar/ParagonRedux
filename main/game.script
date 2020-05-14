@@ -64,6 +64,9 @@ function checkMatchingGlyph(player, anyFound)
 	if(match ~= nil) then
 		-- freeze the match on the board
 		UT.log(player .. " MATCH FOUND")
+		local points = MA.getPlayers().getPoints(MA.getCurrentPlayer())
+		MA.getPlayers().setPoints(MA.getCurrentPlayer(), points + 1)
+		msg.post("game:/gui#gui_ingame", CO.MESSAGE_MATCHFOUND)
 		MA.getBoard().setGlyphCompleted(match, glyph, MA.isMarathon(), getFreezeGlyphCompletedCallback(player))
 	else
 		UT.log(player .. " match not found")
