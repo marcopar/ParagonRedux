@@ -115,9 +115,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   outline {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.6
+    y: 0.4
+    z: 0.0
     w: 1.0
   }
   shadow {

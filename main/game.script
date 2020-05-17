@@ -66,7 +66,7 @@ function checkMatchingGlyph(player, anyFound)
 		UT.log(player .. " MATCH FOUND")
 		local points = MA.getPlayers().getPoints(MA.getCurrentPlayer())
 		MA.getPlayers().setPoints(MA.getCurrentPlayer(), points + 1)
-		msg.post("game:/gui#gui_ingame", CO.MESSAGE_MATCHFOUND)
+		msg.post("game:/gui#gui_ingame", CO.MESSAGE_UPDATESCORE)
 		MA.getBoard().setGlyphCompleted(match, glyph, MA.isMarathon(), getFreezeGlyphCompletedCallback(player))
 	else
 		UT.log(player .. " match not found")
@@ -115,8 +115,18 @@ end
 local function handleEndGame()
 	UT.log("game ends")
 	gameEnded = true
+	local points1 = MA.getPlayers().getPoints(CO.PLAYER1)
+	local points2 = MA.getPlayers().getPoints(CO.PLAYER2)
+	local text
+	if(points1 > points2) then
+		text = "PLAYER 1 WINS!"
+	elseif(points2 > points1) then
+		text = "PLAYER 2 WINS!"
+	else
+		text = "DRAW!"
+	end
 	MO.show(PO.INFORMATION_POPUP, {}, 
-		{text="PLAYER x WINS", okCallback=function()
+		{text=text, okCallback=function()
 			MO.back()
 		end}
 	)
@@ -223,6 +233,7 @@ function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
 		UT.log("resume game")
 		MA.loadGame()
+		msg.post("game:/gui#gui_ingame", CO.MESSAGE_UPDATESCORE)
 		if(checkEndGame()) then
 			handleEndGame()
 		else

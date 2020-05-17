@@ -101,9 +101,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.6
+    y: 0.4
+    z: 0.0
     w: 1.0
   }
   type: TYPE_BOX
@@ -210,9 +210,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.7019608
+    y: 0.4
+    z: 0.101960786
     w: 1.0
   }
   type: TYPE_TEXT
@@ -273,9 +273,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.6
+    y: 0.4
+    z: 0.0
     w: 1.0
   }
   type: TYPE_BOX
@@ -382,9 +382,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.7019608
+    y: 0.4
+    z: 0.101960786
     w: 1.0
   }
   type: TYPE_TEXT
@@ -445,9 +445,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.6
+    y: 0.4
+    z: 0.0
     w: 1.0
   }
   type: TYPE_BOX
@@ -554,9 +554,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.7019608
+    y: 0.4
+    z: 0.101960786
     w: 1.0
   }
   type: TYPE_TEXT
@@ -617,9 +617,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.6
+    y: 0.4
+    z: 0.0
     w: 1.0
   }
   type: TYPE_BOX
@@ -726,9 +726,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.7019608
+    y: 0.4
+    z: 0.101960786
     w: 1.0
   }
   type: TYPE_TEXT
@@ -789,9 +789,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.6
+    y: 0.4
+    z: 0.0
     w: 1.0
   }
   type: TYPE_BOX
@@ -898,9 +898,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.24705882
-    y: 0.24705882
-    z: 0.24705882
+    x: 0.7019608
+    y: 0.4
+    z: 0.101960786
     w: 1.0
   }
   type: TYPE_TEXT
@@ -912,9 +912,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   outline {
-    x: 1.0
-    y: 1.0
-    z: 1.0
+    x: 0.6
+    y: 0.2
+    z: 0.0
     w: 1.0
   }
   shadow {
@@ -929,7 +929,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  outline_alpha: 0.0
+  outline_alpha: 1.0
   shadow_alpha: 0.0
   template_node_child: false
   text_leading: 1.0

@@ -19,7 +19,7 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if(message_id == hash(CO.MESSAGE_MATCHFOUND)) then
+	if(message_id == hash(CO.MESSAGE_UPDATESCORE)) then
 		local points1 = MA.getPlayers().getPoints(CO.PLAYER1)
 		local text1 = gui.get_node(CO.GUI_PLAYER1POINTS .. "_text")
 		gui.set_text(text1, "" .. points1)
