@@ -5,6 +5,8 @@ local MA = require "main.match"
 local UT = require "main.utils"
 local PO = require "popup.popup"
 
+local BO = require "main.board"
+
 function init(self)
 	GO.acquire_input()
 	msg.post(".", "acquire_input_focus")
@@ -43,14 +45,7 @@ function on_input(self, action_id, action)
 			MO.show(hash(CO.SCREEN_SETTINGS))
 		end)
 		GO.button(CO.GUI_ABOUT, action_id, action, function(button)
-			MO.show(PO.CONFIRMATION_POPUP, {}, 
-			{text="PLAYER x WINS", ok="Aok", cancel="Bcancel", okCallback=function()
-				MO.back()
-			end,
-			cancelCallback=function()
-				MO.back()
-			end}
-		)
+			
 		end)
 
 		

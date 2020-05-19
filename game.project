@@ -18,9 +18,6 @@ version = 1.0.0
 [sprite]
 max_count = 256
 
-[sound]
-max_sound_instances = 256
-
 [android]
 package = eu.flatworld.paragonredux
 

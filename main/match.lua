@@ -177,6 +177,18 @@ function M.loadGame()
 		M.setSettings(file.settings)
 		UT.log("loadGame")
 		pprint(file)
+
+		local b = BO.getBoardValues()
+		pprint("board")
+		pprint(b)
+		for k,v in pairs(b) do
+			pprint("k")
+			pprint(k)
+			pprint("tile")
+			pprint(BO.getTileFromCellIndex(k)) 
+			pprint("idx")
+			pprint(BO.getCellIndexInBoard(BO.getTileFromCellIndex(k)))
+		end
 		return true
 	end
 	return false

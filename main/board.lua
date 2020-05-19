@@ -11,6 +11,19 @@ function M.getCellIndexInBoard(tile)
 	return tile.x + tile.y * CO.BOARD_H
 end
 
+function M.getTileFromCellIndex(idx)
+	-- damn the day my laziness choose to have the board with negative indexes
+	local tile = vmath.vector3()
+	if(idx >= 0) then
+		tile.x = idx - math.floor(idx / CO.BOARD_H) * CO.BOARD_H
+		tile.y = math.floor(idx / CO.BOARD_H)
+	else
+		tile.x = idx - math.ceil(idx / CO.BOARD_H) * CO.BOARD_H
+		tile.y = math.ceil(idx / CO.BOARD_H)
+	end
+	return tile
+end
+
 function M.isOnBoard(tile) 
 	if(tile.x >= CO.BOARD_XMIN and tile.x <= CO.BOARD_XMAX and tile.y >= CO.BOARD_YMIN and tile.y <=CO.BOARD_YMAX) then
 		return true
