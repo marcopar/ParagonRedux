@@ -7,20 +7,13 @@ local ST = require "main.storage"
 local board = {sprites={}, values={}}
 
 function M.getCellIndexInBoard(tile)
-	-- tile x, y can be negative as the tilemap is centered in the world origin, so the offset in the array can also be negative (not an issue in lua 8-))
-	return tile.x + tile.y * CO.BOARD_H
+	return (tile.x + math.abs(CO.BOARD_XMIN)) + (tile.y + math.abs(CO.BOARD_YMIN)) * CO.BOARD_H
 end
 
 function M.getTileFromCellIndex(idx)
-	-- damn the day my laziness choose to have the board with negative indexes
 	local tile = vmath.vector3()
-	if(idx >= 0) then
-		tile.x = idx - math.floor(idx / CO.BOARD_H) * CO.BOARD_H
-		tile.y = math.floor(idx / CO.BOARD_H)
-	else
-		tile.x = idx - math.ceil(idx / CO.BOARD_H) * CO.BOARD_H
-		tile.y = math.ceil(idx / CO.BOARD_H)
-	end
+	tile.x = idx % CO.BOARD_H - math.abs(CO.BOARD_XMIN)
+	tile.y = math.floor(idx / CO.BOARD_H) - math.abs(CO.BOARD_YMIN)
 	return tile
 end
 
@@ -157,7 +150,8 @@ function M.checkMatchingGlyphAtTile(origin, player, glyph, checkPotentialMatch)
 			local tx = origin.x + (x - 1)
 			local ty = origin.y - (y - 1)
 			local glyphValue = glyph[x + (y - 1) * CO.GLYPH_H]
-			local boardValue = board.values[tx + ty * CO.BOARD_H]
+			local cellPos = M.getCellIndexInBoard(vmath.vector3(tx, ty, 0))
+			local boardValue = board.values[cellPos]
 			if(checkPotentialMatch and boardValue == nil) then
 				-- empty slot, simulate it's occupied by player
 				boardValue = player

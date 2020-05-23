@@ -157,7 +157,7 @@ function M.saveGame()
 	file.state = state
 	file.settings = settings
 	UT.log("saveGame")
-	pprint(file)
+	--pprint(file)
 	sys.save(filename, file)
 end
 
@@ -165,7 +165,7 @@ function M.deleteGame()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_GAME)
 	local file = {}
 	UT.log("deleteGame")
-	pprint(file)
+	--pprint(file)
 	sys.save(filename, file)
 end
 
@@ -176,19 +176,7 @@ function M.loadGame()
 		M.setState(file.state)
 		M.setSettings(file.settings)
 		UT.log("loadGame")
-		pprint(file)
-
-		local b = BO.getBoardValues()
-		pprint("board")
-		pprint(b)
-		for k,v in pairs(b) do
-			pprint("k")
-			pprint(k)
-			pprint("tile")
-			pprint(BO.getTileFromCellIndex(k)) 
-			pprint("idx")
-			pprint(BO.getCellIndexInBoard(BO.getTileFromCellIndex(k)))
-		end
+		--pprint(file)
 		return true
 	end
 	return false
@@ -209,7 +197,7 @@ function M.saveSettings()
 	local file = {settings=nil}
 	file.settings = settings
 	UT.log("saveSettings")
-	pprint(file)
+	--pprint(file)
 	sys.save(filename, file)
 end
 
@@ -217,7 +205,7 @@ function M.deleteSettings()
 	local filename = sys.get_save_file(CO.FILE_GAMENAME, CO.FILE_SETTINGS)
 	local file = {}
 	UT.log("deleteSettings")
-	pprint(file)
+	--pprint(file)
 	sys.save(filename, file)
 end
 
@@ -226,7 +214,7 @@ function M.loadSettings()
 	local file = sys.load(filename)
 	if(file.settings ~= nil) then
 		UT.log("loadSettings")
-		pprint(file)
+		--pprint(file)
 		M.setSettings(file.settings)
 		return true
 	end
