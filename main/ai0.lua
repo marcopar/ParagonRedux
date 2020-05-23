@@ -4,22 +4,29 @@ local CO = require "main.constants"
 local BO = require "main.board"
 local UT = require "main.utils"
 
--- dumb AI, places an orb in the first empty cell
-function M.think(player, boardValues)
-
-
-	
-	local tile = vmath.vector3()
+function M.getEmptyTiles(boardValues)
+	local emptyTiles= {}
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
 		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do
+			local tile = vmath.vector3()
 			tile.x = x;
 			tile.y = y;
 			local cellPos = BO.getCellIndexInBoard(tile)
 			local value = boardValues[cellPos]
 			if(value == nil) then
-				return tile
+				table.insert(emptyTiles, tile)
 			end
 		end
+	end
+	return emptyTiles
+end
+
+
+-- dumb AI, places an orb in the first empty cell
+function M.think(player, boardValues)
+	local emptyTiles = M.getEmptyTiles(boardValues)
+	if(#emptyTiles ~= 0) then
+		return emptyTiles[math.random(#emptyTiles)]
 	end
 	return nil
 end
