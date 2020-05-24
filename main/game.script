@@ -167,8 +167,7 @@ end
 
 local function executeAIFlow()
 	aiRunning = true
-	-- fake AI thinking
-	timer.delay(0.01, false, executeAI)
+	executeAI()
 	FL.until_true(isAIRunning)
 end
 
@@ -227,7 +226,7 @@ function on_message(self, message_id, message, sender)
 		UT.log("new game")
 		MA.newMatch()
 		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-			FL.start(executeAIFlow())
+			FL.start(executeAIFlow)
 		end
 	end
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
@@ -238,7 +237,7 @@ function on_message(self, message_id, message, sender)
 			handleEndGame()
 		else
 			if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-				FL.start(executeAIFlow())
+				FL.start(executeAIFlow)
 			end
 		end
 	end
