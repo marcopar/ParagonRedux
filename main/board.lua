@@ -24,6 +24,69 @@ function M.isOnBoard(tile)
 	return false
 end
 
+function M.scanBoardAtTile(origin, player, glyph)
+	local empty = 0
+	local matching = 0
+	local potentialMatching = 0
+	for x = 1, CO.GLYPH_W do
+		for y = 1, CO.GLYPH_H do
+			local tx = origin.x + (x - 1)
+			local ty = origin.y - (y - 1)
+			local glyphValue = glyph[x + (y - 1) * CO.GLYPH_H]
+			local cellPos = M.getCellIndexInBoard(vmath.vector3(tx, ty, 0))
+			local boardValue = board.values[cellPos]
+			if(boardValue ~= nil) then
+				empty = empty + 1
+			end
+			if(glyphValue == 1 and (boardValue == player or boardValue == nil)) then
+				if(boardValue == nil) then
+					potentialMatching = potentialMatching + 1
+				else
+					matching = matching + 1
+				end	
+			end
+		end
+	end
+	local scanResult = {empty=true, matching=0, canComplete=false}
+	scanResult.matching = matching
+	scanResult.empty = empty == CO.GLYPH_ORBS
+	scanResult.canComplete = (matching + potentialMatching == CO.GLYPH_ORBS)
+	return scanResult
+end
+
+function M.scanBoard(player, glyph, checkPotentialMatch)
+	local scanResult = {empty={}, blocked={}, matching1={}, matching2={}, matching3={}, matching4={}}
+	local tile = vmath.vector3()
+	-- explore from top left and match from top left as glyphs have the origin in top left
+	for x = CO.BOARD_XMIN, CO.BOARD_XMAX - 2 do
+		for y = CO.BOARD_YMAX, CO.BOARD_YMIN + 2, -1 do
+			tile.x = x;
+			tile.y = y;
+			local scanResultTile = M.scanBoardAtTile(tile, player, glyph)
+			if scanResultTile.empty then
+				table.insert(scanResult.empty, tile)
+				goto continue
+			end
+			if not scanResultTile.canComplete then
+				table.insert(scanResult.blocked, tile)
+				goto continue
+			end
+			if scanResultTile.matching == 1 then
+				table.insert(scanResult.matching1, tile)
+			elseif scanResultTile.matching == 2 then
+				table.insert(scanResult.matching2, tile)
+			elseif scanResultTile.matching == 3 then
+				table.insert(scanResult.matching3, tile)
+			elseif scanResultTile.matching == 4 then
+				table.insert(scanResult.matching4, tile)
+			end
+
+			::continue::
+		end
+	end		
+	return scanResult
+end
+
 function M.setCell(tile, player)
 	local orb = UT.createOrb(tile, player, 0.5)
 	local cellPos = M.getCellIndexInBoard(tile)
@@ -143,29 +206,6 @@ end
 
 -- checkPotentialMatch treats empty slots as slots occupied by player
 -- used to check if player can still make a match
-function M.checkMatchingGlyphAtTile(origin, player, glyph, checkPotentialMatch)
-	local matching = 0
-	for x = 1, CO.GLYPH_W do
-		for y = 1, CO.GLYPH_H do
-			local tx = origin.x + (x - 1)
-			local ty = origin.y - (y - 1)
-			local glyphValue = glyph[x + (y - 1) * CO.GLYPH_H]
-			local cellPos = M.getCellIndexInBoard(vmath.vector3(tx, ty, 0))
-			local boardValue = board.values[cellPos]
-			if(checkPotentialMatch and boardValue == nil) then
-				-- empty slot, simulate it's occupied by player
-				boardValue = player
-			end
-			if(glyphValue == 1 and boardValue == player) then
-				matching = matching + 1
-			end
-		end
-	end
-	return (matching == CO.GLYPH_ORBS)
-end
-
--- checkPotentialMatch treats empty slots as slots occupied by player
--- used to check if player can still make a match
 function M.checkMatchingGlyph(player, glyph, checkPotentialMatch)
 	local tile = vmath.vector3()
 	-- explore from top left and match from top left as glyphs have the origin in top left
@@ -173,7 +213,11 @@ function M.checkMatchingGlyph(player, glyph, checkPotentialMatch)
 		for y = CO.BOARD_YMAX, CO.BOARD_YMIN + 2, -1 do
 			tile.x = x;
 			tile.y = y;
-			if(M.checkMatchingGlyphAtTile(tile, player, glyph, checkPotentialMatch)) then
+			local scanResult = M.scanBoardAtTile(tile, player, glyph)
+			if(checkPotentialMatch and scanResult.canComplete) then
+				return tile
+			end
+			if(scanResult.matching == CO.GLYPH_ORBS) then
 				return tile
 			end
 		end
