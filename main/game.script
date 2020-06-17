@@ -6,6 +6,8 @@ local AI0 = require "main.ai0"
 local PO = require "popup.popup"
 local FL = require "ludobits.m.flow"
 local MO = require "monarch.monarch"
+local BO = require "main.board"
+local PL = require "main.players"
 
 local checkingSingleGlyph = false
 local swapping = false
@@ -204,6 +206,7 @@ local function processPlayerInput(currentPlayer, tile)
 			-- input reenabled inside the flow
 			-- player changed inside the flow
 			FL.start(checkAndSwapFlow)
+			BO.scanBoard(currentPlayer, PL.getGlyph(currentPlayer))
 		else
 			inputDisabled = false
 		end			
