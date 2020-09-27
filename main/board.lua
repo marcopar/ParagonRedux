@@ -24,8 +24,8 @@ function M.isOnBoard(tile)
 	return false
 end
 
-function M.getEmptyTiles()
-	local emptyTiles= {}
+function M.getEmptyCells()
+	local emptyCells= {}
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
 		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do
 			local tile = vmath.vector3()
@@ -34,14 +34,14 @@ function M.getEmptyTiles()
 			local cellPos = M.getCellIndexInBoard(tile)
 			local value = board.values[cellPos]
 			if(value == nil) then
-				table.insert(emptyTiles, tile)
+				table.insert(emptyCells, tile)
 			end
 		end
 	end
-	return emptyTiles
+	return emptyCells
 end
 
-function M.scanBoardAtTile(origin, player, glyph)
+function M.scanBoardAtCell(origin, player, glyph)
 	local empty = 0
 	local matching = 0
 	local potentialMatching = 0
@@ -72,14 +72,14 @@ function M.scanBoardAtTile(origin, player, glyph)
 end
 
 function M.scanBoard(player, glyph)
-	local scanResult = {empty={}, blocked={}, matching1={}, matching2={}, matching3={}, matching4={}, emptyTiles={}}
+	local scanResult = {empty={}, blocked={}, matching1={}, matching2={}, matching3={}, matching4={}, emptyCells={}}
 	-- explore from top left and match from top left as glyphs have the origin in top left
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX - 2 do
 		for y = CO.BOARD_YMAX, CO.BOARD_YMIN + 2, -1 do
 			local tile = vmath.vector3()
 			tile.x = x;
 			tile.y = y;
-			local scanResultTile = M.scanBoardAtTile(tile, player, glyph)
+			local scanResultTile = M.scanBoardAtCell(tile, player, glyph)
 			if scanResultTile.empty then
 				table.insert(scanResult.empty, tile)
 				goto continue
@@ -105,7 +105,7 @@ function M.scanBoard(player, glyph)
 		end
 	end
 
-	scanResult.emptyTiles = M.getEmptyTiles()
+	scanResult.emptyCells = M.getEmptyCells()
 	--if(player == CO.PLAYER1) then
 	--	UT.log("scan board " .. player)
 	--	pprint(scanResult)
@@ -239,7 +239,7 @@ function M.checkMatchingGlyph(player, glyph, checkPotentialMatch)
 		for y = CO.BOARD_YMAX, CO.BOARD_YMIN + 2, -1 do
 			tile.x = x;
 			tile.y = y;
-			local scanResult = M.scanBoardAtTile(tile, player, glyph)
+			local scanResult = M.scanBoardAtCell(tile, player, glyph)
 			if(checkPotentialMatch and scanResult.canComplete) then
 				return tile
 			end

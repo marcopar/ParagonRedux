@@ -188,7 +188,6 @@ local function checkAndSwapFlow()
 		handleEndGame()
 	else
 		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
-			UT.log("execute AI")
 			executeAIFlow()
 		end
 	end
@@ -216,7 +215,7 @@ local function processPlayerInput(currentPlayer, tile)
 end
 
 function executeAI()
-	UT.log("execute ai")
+	UT.log("execute AI")
 	local tile = AI1.think(MA.getCurrentPlayer())
 	if(tile ~= nil) then
 		processPlayerInput(MA.getCurrentPlayer(), tile)
