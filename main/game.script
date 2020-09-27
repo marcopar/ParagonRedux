@@ -2,7 +2,7 @@ local CO = require "main.constants"
 local UT = require "main.utils"
 local MA = require "main.match"
 local ST = require "main.storage"
-local AI0 = require "main.ai0"
+local AI1 = require "main.ai1"
 local PO = require "popup.popup"
 local FL = require "ludobits.m.flow"
 local MO = require "monarch.monarch"
@@ -217,7 +217,7 @@ end
 
 function executeAI()
 	UT.log("execute ai")
-	local tile = AI0.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
+	local tile = AI1.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
 	if(tile ~= nil) then
 		processPlayerInput(MA.getCurrentPlayer(), tile)
 	end
