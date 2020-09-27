@@ -30,6 +30,14 @@ function M.getNextPlayer()
 	end
 end
 
+function M.getOpponentPlayer(player)
+	if(player == CO.PLAYER1) then
+		return CO.PLAYER2
+	else
+		return CO.PLAYER1
+	end
+end
+
 function M.getCurrentPlayer()
 	return currentPlayer
 end

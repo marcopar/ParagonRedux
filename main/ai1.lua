@@ -3,28 +3,16 @@ local M = {}
 local CO = require "main.constants"
 local BO = require "main.board"
 local UT = require "main.utils"
+local MA = require "main.match"
 
-function M.getEmptyTiles(boardValues)
-	local emptyTiles= {}
-	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
-		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do
-			local tile = vmath.vector3()
-			tile.x = x;
-			tile.y = y;
-			local cellPos = BO.getCellIndexInBoard(tile)
-			local value = boardValues[cellPos]
-			if(value == nil) then
-				table.insert(emptyTiles, tile)
-			end
-		end
-	end
-	return emptyTiles
-end
+function M.think(player)
+	local playerGlyph = MA.getPlayers().getGlyph(player)
+	local playerScanResult = BO.scanBoard(player, playerGlyph)
+	local oppenentPlayer = MA.getOpponentPlayer(player)
+	local opponentPlayerGlyph = MA.getPlayers().getGlyph(oppenentPlayer)
+	local opponentPlayerScanResult = BO.scanBoard(oppenentPlayer, opponentPlayerGlyph)
 
-
--- dumb AI, places an orb in the first empty cell
-function M.think(player, boardValues)
-	local emptyTiles = M.getEmptyTiles(boardValues)
+	local emptyTiles = playerScanResult.emptyTiles
 	if(#emptyTiles ~= 0) then
 		return emptyTiles[math.random(#emptyTiles)]
 	end
@@ -32,4 +20,3 @@ function M.think(player, boardValues)
 end
 
 return M
-	

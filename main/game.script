@@ -217,7 +217,7 @@ end
 
 function executeAI()
 	UT.log("execute ai")
-	local tile = AI1.think(MA.getCurrentPlayer(), MA.getBoard().getBoardValues())
+	local tile = AI1.think(MA.getCurrentPlayer())
 	if(tile ~= nil) then
 		processPlayerInput(MA.getCurrentPlayer(), tile)
 	end

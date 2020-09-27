@@ -24,6 +24,23 @@ function M.isOnBoard(tile)
 	return false
 end
 
+function M.getEmptyTiles()
+	local emptyTiles= {}
+	for x = CO.BOARD_XMIN, CO.BOARD_XMAX do
+		for y = CO.BOARD_YMIN, CO.BOARD_YMAX do
+			local tile = vmath.vector3()
+			tile.x = x;
+			tile.y = y;
+			local cellPos = M.getCellIndexInBoard(tile)
+			local value = board.values[cellPos]
+			if(value == nil) then
+				table.insert(emptyTiles, tile)
+			end
+		end
+	end
+	return emptyTiles
+end
+
 function M.scanBoardAtTile(origin, player, glyph)
 	local empty = 0
 	local matching = 0
@@ -55,7 +72,7 @@ function M.scanBoardAtTile(origin, player, glyph)
 end
 
 function M.scanBoard(player, glyph)
-	local scanResult = {empty={}, blocked={}, matching1={}, matching2={}, matching3={}, matching4={}}
+	local scanResult = {empty={}, blocked={}, matching1={}, matching2={}, matching3={}, matching4={}, emptyTiles={}}
 	-- explore from top left and match from top left as glyphs have the origin in top left
 	for x = CO.BOARD_XMIN, CO.BOARD_XMAX - 2 do
 		for y = CO.BOARD_YMAX, CO.BOARD_YMIN + 2, -1 do
@@ -87,6 +104,8 @@ function M.scanBoard(player, glyph)
 			::continue::
 		end
 	end
+
+	scanResult.emptyTiles = M.getEmptyTiles()
 	--if(player == CO.PLAYER1) then
 	--	UT.log("scan board " .. player)
 	--	pprint(scanResult)
