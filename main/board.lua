@@ -87,10 +87,10 @@ function M.scanBoard(player, glyph)
 			::continue::
 		end
 	end
-	if(player == CO.PLAYER1) then
-		UT.log("scan board " .. player)
-		pprint(scanResult)
-	end
+	--if(player == CO.PLAYER1) then
+	--	UT.log("scan board " .. player)
+	--	pprint(scanResult)
+	--end
 	return scanResult
 end
 
