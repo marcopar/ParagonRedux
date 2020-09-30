@@ -82,26 +82,17 @@ function M.scanBoard(player, glyph)
 			local scanResultTile = M.scanBoardAtCell(tile, player, glyph)
 			if scanResultTile.empty then
 				table.insert(scanResult.empty, tile)
-				goto continue
-			end
-			if not scanResultTile.canComplete then
+			elseif not scanResultTile.canComplete then
 				table.insert(scanResult.blocked, tile)
-				goto continue
-			end
-			if scanResultTile.matching == 1 then
+			elseif scanResultTile.matching == 1 then
 				table.insert(scanResult.matching1, tile)
-				goto continue
 			elseif scanResultTile.matching == 2 then
 				table.insert(scanResult.matching2, tile)
-				goto continue
 			elseif scanResultTile.matching == 3 then
 				table.insert(scanResult.matching3, tile)
-				goto continue
 			elseif scanResultTile.matching == 4 then
 				table.insert(scanResult.matching4, tile)
-				goto continue
 			end
-			::continue::
 		end
 	end
 
