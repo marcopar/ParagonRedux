@@ -20,7 +20,7 @@ local function getAIParameters(playerType)
 		parameters.smartness = 80
 		parameters.aggressiveness = 40
 	elseif (playerType == CO.SETTINGS_PLAYER_TYPE_AI5) then
-		parameters.smartness =  80
+		parameters.smartness =  100
 		parameters.aggressiveness = 60
 	end
 	return parameters
@@ -51,75 +51,80 @@ local function selectCell(matchTable, glyph)
 	end
 end
 
-function M.think(player)
+local function ai5(player, parameters)
 	local playerGlyph = MA.getPlayers().getGlyph(player)
 	local playerType = MA.getPlayers().getType(player)
 	local playerScanResult = BO.scanBoard(player, playerGlyph)
 	local oppenentPlayer = MA.getOpponentPlayer(player)
 	local opponentPlayerGlyph = MA.getPlayers().getGlyph(oppenentPlayer)
 	local opponentPlayerScanResult = BO.scanBoard(oppenentPlayer, opponentPlayerGlyph)
+	
+	-- smart placement
+	local selectedCell
 
-	local parameters = getAIParameters(playerType)
+	selectedCell = selectCell(opponentPlayerScanResult.matching4, opponentPlayerGlyph)
+	if(selectedCell ~=  nil) then
+		return selectedCell
+	end
+	selectedCell = selectCell(playerScanResult.matching4, playerGlyph)
+	if(selectedCell ~=  nil) then
+		return selectedCell
+	end
 
-	if(math.random(100) <= parameters.smartness) then
-		-- smart placement
-		local selectedCell
+	local n = math.random(2)
 
-		if(math.random(100) <= parameters.aggressiveness) then
-			selectedCell = selectCell(playerScanResult.matching4, playerGlyph)
-			if(selectedCell ~=  nil) then
-				return selectedCell
-			end
-			selectedCell = selectCell(opponentPlayerScanResult.matching4, opponentPlayerGlyph)
-			if(selectedCell ~=  nil) then
-				return selectedCell
-			end
-		else
-			selectedCell = selectCell(opponentPlayerScanResult.matching4, opponentPlayerGlyph)
-			if(selectedCell ~=  nil) then
-				return selectedCell
-			end
-			selectedCell = selectCell(playerScanResult.matching4, playerGlyph)
-			if(selectedCell ~=  nil) then
-				return selectedCell
-			end
-		end
-
+	if(n == 1) then
 		selectedCell = selectCell(opponentPlayerScanResult.matching3, opponentPlayerGlyph)
 		if(selectedCell ~=  nil) then
 			return selectedCell
 		end
-		if(playerType == CO.SETTINGS_PLAYER_TYPE_AI5) then
-			selectedCell = selectCell(opponentPlayerScanResult.matching2, opponentPlayerGlyph)
-			if(selectedCell ~=  nil) then
-				return selectedCell
-			end
+		selectedCell = selectCell(opponentPlayerScanResult.matching2, opponentPlayerGlyph)
+		if(selectedCell ~=  nil) then
+			return selectedCell
 		end
+	end
+	
+	n = math.random(2)
+	if(n == 1) then
 		selectedCell = selectCell(playerScanResult.matching3, playerGlyph)
 		if(selectedCell ~=  nil) then
 			return selectedCell
 		end
-		selectedCell = selectCell(playerScanResult.matching2, playerGlyph)
-		if(selectedCell ~=  nil) then
-			return selectedCell
-		end
-		selectedCell = selectCell(playerScanResult.matching1, playerGlyph)
-		if(selectedCell ~=  nil) then
-			return selectedCell
-		end
-		selectedCell = selectCell(playerScanResult.empty, playerGlyph)
-		if(selectedCell ~=  nil) then
-			return selectedCell
-		end
 	end
-
-	-- dumb placement, random
-	local emptyCells = playerScanResult.emptyCells
-	if(#emptyCells ~= 0) then
-		return emptyCells[math.random(#emptyCells)]
+	
+	selectedCell = selectCell(playerScanResult.matching2, playerGlyph)
+	if(selectedCell ~=  nil) then
+		return selectedCell
+	end
+	selectedCell = selectCell(playerScanResult.matching1, playerGlyph)
+	if(selectedCell ~=  nil) then
+		return selectedCell
+	end
+	selectedCell = selectCell(playerScanResult.empty, playerGlyph)
+	if(selectedCell ~=  nil) then
+		return selectedCell
 	end
 	
 	return nil
+end
+
+function M.think(player)
+	local playerType = MA.getPlayers().getType(player)
+	local parameters = getAIParameters(playerType)
+
+	local n = math.random(100)
+	if(n > parameters.smartness) then
+		-- dumb placement, random
+		local playerGlyph = MA.getPlayers().getGlyph(player)
+		local playerType = MA.getPlayers().getType(player)
+		local playerScanResult = BO.scanBoard(player, playerGlyph)
+		local emptyCells = playerScanResult.emptyCells
+		if(#emptyCells ~= 0) then
+			return emptyCells[math.random(#emptyCells)]
+		end
+	end
+
+	return ai5(player, parameters)
 end
 
 return M
