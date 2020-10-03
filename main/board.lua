@@ -181,6 +181,7 @@ function M.swapBoard(endCallback)
 			end
 		end
 	end
+	msg.post("controller:/controller", CO.SOUND_SWAP)
 end
 
 function M.clearBoard()

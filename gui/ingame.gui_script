@@ -33,6 +33,7 @@ end
 function on_input(self, action_id, action)
 	local group = GO.group("group1", function()
 		GO.button(CO.GUI_MAINMENU, action_id, action, function(button)
+			msg.post("controller:/controller", CO.SOUND_MENU)
 			MO.show(hash(CO.SCREEN_MAINMENU))
 		end)
 	end)

@@ -202,7 +202,7 @@ local function processPlayerInput(currentPlayer, tile)
 			-- empty cell
 			UT.log(currentPlayer .. " orb placed")
 			MA.getBoard().setCell(tile, currentPlayer)
-			sound.play("controller:/sound#drop")
+			msg.post("controller:/controller", CO.SOUND_DROP)
 			-- input reenabled inside the flow
 			-- player changed inside the flow
 			FL.start(checkAndSwapFlow)

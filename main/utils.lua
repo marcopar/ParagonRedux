@@ -36,6 +36,9 @@ local function anim_changeOrbType_end(self, orb, property)
 	local callback = ST.get(ST.url2key(orb) .. "callback")
 	sprite.play_flipbook(orb, CO.ORBS[orbType])
 	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTELASTIC, 0.5, 0, callback)
+	if(orbType == CO.FREEZED) then
+		msg.post("controller:/controller", CO.SOUND_FREEZE)
+	end
 end
 
 function M.changeOrbType(orb, orbType, delay, callback)
@@ -58,6 +61,7 @@ local function anim_deleteOrbAnimated_end(self, orb, property)
 	if(callback ~= nil) then
 		callback()
 	end
+	msg.post("controller:/controller", CO.SOUND_VANISH)
 end
 
 -- animated delete

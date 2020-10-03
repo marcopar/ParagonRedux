@@ -13,7 +13,9 @@ function init(self)
 	
 	msg.post("#", CO.SCREEN_MAINMENU)
 
-	sound.play("/sound#background")
+	msg.post("#", CO.MUSIC_START)
+
+	
 end
 
 function screenLoadedResumeGame()
@@ -29,5 +31,19 @@ function on_message(self, message_id, message, sender)
 		MO.show(CO.SCREEN_MAINMENU)
 	elseif message_id == hash(CO.SCREEN_GAME) then
 		MO.show(CO.SCREEN_GAME)
+	elseif message_id == hash(CO.SOUND_DROP) then
+		sound.play("/sound#drop")
+	elseif message_id == hash(CO.SOUND_FREEZE) then
+		sound.play("/sound#freeze")
+	elseif message_id == hash(CO.SOUND_SWAP) then
+		sound.play("/sound#swap")
+	elseif message_id == hash(CO.SOUND_VANISH) then
+		sound.play("/sound#vanish")
+	elseif message_id == hash(CO.SOUND_MENU) then
+		sound.play("/sound#blip")
+	elseif message_id == hash(CO.MUSIC_START) then
+		sound.play("/sound#background")
+	elseif message_id == hash(CO.MUSIC_STOP) then
+		sound.play("/sound#stop", {gain = 0.75})
 	end
 end
