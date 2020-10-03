@@ -6,22 +6,17 @@ local UT = require "main.utils"
 local MA = require "main.match"
 
 local function getAIParameters(playerType)
-	local parameters = {smartness = 0, aggressiveness=0}
+	local parameters = {smartness = 0}
 	if(playerType == CO.SETTINGS_PLAYER_TYPE_AI1) then
 		parameters.smartness = 20
-		parameters.aggressiveness = 20
 	elseif (playerType == CO.SETTINGS_PLAYER_TYPE_AI2) then
 		parameters.smartness = 40
-		parameters.aggressiveness = 20
 	elseif (playerType == CO.SETTINGS_PLAYER_TYPE_AI3) then
 		parameters.smartness = 60
-		parameters.aggressiveness = 40
 	elseif (playerType == CO.SETTINGS_PLAYER_TYPE_AI4) then
 		parameters.smartness = 80
-		parameters.aggressiveness = 40
 	elseif (playerType == CO.SETTINGS_PLAYER_TYPE_AI5) then
 		parameters.smartness =  100
-		parameters.aggressiveness = 60
 	end
 	return parameters
 end
@@ -72,7 +67,6 @@ local function ai5(player, parameters)
 	end
 
 	local n = math.random(2)
-
 	if(n == 1) then
 		selectedCell = selectCell(opponentPlayerScanResult.matching3, opponentPlayerGlyph)
 		if(selectedCell ~=  nil) then
@@ -103,6 +97,10 @@ local function ai5(player, parameters)
 	selectedCell = selectCell(playerScanResult.empty, playerGlyph)
 	if(selectedCell ~=  nil) then
 		return selectedCell
+	end
+	local emptyCells = playerScanResult.emptyCells
+	if(#emptyCells ~= 0) then
+		return emptyCells[math.random(#emptyCells)]
 	end
 	
 	return nil

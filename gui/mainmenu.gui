@@ -430,7 +430,7 @@ nodes {
 nodes {
   position {
     x: 540.0
-    y: 710.0
+    y: 707.0
     z: 0.0
     w: 1.0
   }
@@ -484,7 +484,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -3.0
     z: 0.0
     w: 1.0
   }
@@ -595,6 +595,68 @@ nodes {
   alpha: 1.0
   outline_alpha: 0.0
   shadow_alpha: 0.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 1029.0
+    y: 71.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+    z: 0.75
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "B2"
+  font: "font_small"
+  id: "text"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
