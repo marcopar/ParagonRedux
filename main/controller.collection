@@ -471,7 +471,7 @@ embedded_instances {
   data: "embedded_components {\n"
   "  id: \"background\"\n"
   "  type: \"sound\"\n"
-  "  data: \"sound: \\\"/assets/sound/Endless Cyber Runner.ogg\\\"\\n"
+  "  data: \"sound: \\\"/assets/sound/Trouble in a Digital City_Looping.ogg\\\"\\n"
   "looping: 1\\n"
   "group: \\\"music\\\"\\n"
   "gain: 0.75\\n"

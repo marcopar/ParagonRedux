@@ -12,10 +12,6 @@ local function cycleSwapEveryValue(value)
 	return (value + 20) % 120
 end
 
-local function cycleMarathonValue(value)
-	return not value
-end
-
 local function cyclePlayerTypeValue(value)
 	local idx = UT.indexOf(CO.SETTINGS_PLAYER_TYPES, value)
 	local newidx =  (idx % table.getn(CO.SETTINGS_PLAYER_TYPES)) + 1
@@ -86,7 +82,7 @@ function on_input(self, action_id, action)
 		end)
 		GO.button(CO.GUI_MARATHON, action_id, action, function(button)
 			msg.post("controller:/controller", CO.SOUND_MENU)
-			local newValue = cycleMarathonValue(MA.isMarathon())
+			local newValue = not MA.isMarathon()
 			MA.setMarathon(newValue)
 			
 			local text = gui.get_node(CO.GUI_MARATHON .. "_text")

@@ -3,6 +3,8 @@ local MO = require "monarch.monarch"
 local MA = require "main.match"
 local UT = require "main.utils"
 
+local musicIsPlaying = false
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	-- randomize and discard the first values as they may be always be the same....god knows why
@@ -12,10 +14,6 @@ function init(self)
 	math.random()
 	
 	msg.post("#", CO.SCREEN_MAINMENU)
-
-	msg.post("#", CO.MUSIC_START)
-
-	
 end
 
 function screenLoadedResumeGame()
@@ -32,18 +30,32 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash(CO.SCREEN_GAME) then
 		MO.show(CO.SCREEN_GAME)
 	elseif message_id == hash(CO.SOUND_DROP) then
-		sound.play("/sound#drop")
+		if(MA.isSfx()) then
+			sound.play("/sound#drop")
+		end
 	elseif message_id == hash(CO.SOUND_FREEZE) then
-		sound.play("/sound#freeze")
+		if(MA.isSfx()) then
+			sound.play("/sound#freeze")
+		end
 	elseif message_id == hash(CO.SOUND_SWAP) then
-		sound.play("/sound#swap")
+		if(MA.isSfx()) then
+			sound.play("/sound#swap")
+		end
 	elseif message_id == hash(CO.SOUND_VANISH) then
-		sound.play("/sound#vanish")
+		if(MA.isSfx()) then
+			sound.play("/sound#vanish")
+		end
 	elseif message_id == hash(CO.SOUND_MENU) then
-		sound.play("/sound#blip")
+		if(MA.isSfx()) then
+			sound.play("/sound#blip")
+		end
 	elseif message_id == hash(CO.MUSIC_START) then
-		sound.play("/sound#background")
+		if(not musicIsPlaying) then
+			sound.play("/sound#background")
+			musicIsPlaying = true
+		end
 	elseif message_id == hash(CO.MUSIC_STOP) then
-		sound.play("/sound#stop", {gain = 0.75})
+		sound.stop("/sound#background")
+		musicIsPlaying = false
 	end
 end

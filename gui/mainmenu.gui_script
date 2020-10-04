@@ -15,6 +15,14 @@ function init(self)
 		UT.log("settings exists")
 		MA.loadSettings()
 	end
+
+	local text = gui.get_node(CO.GUI_VERSION)
+	gui.set_text(text, sys.get_config("project.version"))
+
+	if(MA.isMusic()) then
+		msg.post("controller:/controller", CO.MUSIC_START)
+	end
+	
 end
 
 function final(self)

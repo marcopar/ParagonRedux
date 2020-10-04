@@ -13,11 +13,15 @@ high_dpi = 1
 [project]
 title = Paragon Redux
 dependencies = https://github.com/britzl/ludobits/archive/master.zip,https://github.com/britzl/monarch/archive/master.zip,https://github.com/britzl/gooey/archive/master.zip,https://github.com/rgrams/rendercam/archive/v1.0.1.zip
-version = 1.0.0
+version = 1.0.0-beta4
+publisher = Flatworld
 
 [sprite]
 max_count = 256
 
 [android]
 package = eu.flatworld.paragonredux
+
+[html5]
+archive_location_suffix = ?v=1.0.0-beta4
 

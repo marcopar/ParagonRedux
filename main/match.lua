@@ -11,6 +11,9 @@ local swapEvery = 20
 local lastSwapAt = 0
 local marathon = false
 
+local music = true
+local sfx = true
+
 function M.newGlyph(player)
 	PL.setGlyph(player, GL.getRandomGlyph())
 end
@@ -73,6 +76,22 @@ end
 
 function M.getSwapEvery()
 	return swapEvery
+end
+
+function M.isMusic()
+	return music
+end
+
+function M.setMusic(pMusic)
+	music = pMusic
+end
+
+function M.isSfx()
+	return sfx
+end
+
+function M.setSfx(pSfx)
+	sfx = pSfx
 end
 
 function M.getState()
@@ -145,16 +164,27 @@ end
 
 function M.getSettings()
 	local settings = {
+		music = nil,
+		sfx = nil
 	}
+	settings.music = music
+	settings.sfx = sfx
 	return settings
 end
 
 function M.setSettings(settings)
-
+	if(settings.music ~= nil) then
+		music = settings.music
+	end
+	if(settings.sfx ~= nil) then
+		sfx = settings.sfx
+	end
 end
 
 function M.resetSettings()
 	UT.log("reset settings")
+	music = true
+	sfx = true
 end
 
 function M.saveGame()

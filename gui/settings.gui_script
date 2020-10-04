@@ -21,6 +21,13 @@ end
 function init(self)
 	GO.acquire_input()
 	msg.post(".", "acquire_input_focus")
+
+	text = gui.get_node(CO.GUI_MUSIC .. "_text")
+	gui.set_text(text, formatText("MUSIC", getBooleanTextValue(MA.isMusic())))
+
+	text = gui.get_node(CO.GUI_SFX .. "_text")
+	gui.set_text(text, formatText("SFX", getBooleanTextValue(MA.isSfx())))
+	
 end
 
 function final(self)
@@ -45,6 +52,27 @@ function on_input(self, action_id, action)
 			msg.post("controller:/controller", CO.SOUND_MENU)
 			MA.saveSettings()
 			MO.show(hash(CO.SCREEN_MAINMENU))
+		end)
+		GO.button(CO.GUI_MUSIC, action_id, action, function(button)
+			msg.post("controller:/controller", CO.SOUND_MENU)
+			local newValue = not MA.isMusic()
+			MA.setMusic(newValue)
+			local text = gui.get_node(CO.GUI_MUSIC .. "_text")
+			gui.set_text(text, formatText("MUSIC", getBooleanTextValue(MA.isMusic())))
+
+			if(MA.isMusic()) then
+				msg.post("controller:/controller", CO.MUSIC_START)
+			else
+				msg.post("controller:/controller", CO.MUSIC_STOP)
+			end
+		end)
+		GO.button(CO.GUI_SFX, action_id, action, function(button)
+			msg.post("controller:/controller", CO.SOUND_MENU)
+			local newValue = not MA.isSfx()
+			MA.setSfx(newValue)
+
+			local text = gui.get_node(CO.GUI_SFX .. "_text")
+			gui.set_text(text, formatText("SFX", getBooleanTextValue(MA.isSfx())))
 		end)
 	end)
 	return group.consumed
