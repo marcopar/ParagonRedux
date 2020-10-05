@@ -7,6 +7,10 @@ fonts {
   name: "font_medium"
   font: "/gui/font_medium.font"
 }
+fonts {
+  name: "font_small"
+  font: "/gui/font_small.font"
+}
 textures {
   name: "gui"
   texture: "/gui/gui.atlas"
@@ -20,7 +24,7 @@ background_color {
 nodes {
   position {
     x: 540.0
-    y: 1780.0
+    y: 1770.0
     z: 0.0
     w: 1.0
   }
@@ -135,8 +139,8 @@ nodes {
 }
 nodes {
   position {
-    x: 40.0
-    y: 1350.0
+    x: 300.0
+    y: 1500.0
     z: 0.0
     w: 1.0
   }
@@ -167,7 +171,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "0"
-  font: "font_medium"
+  font: "font_big"
   id: "player1Points_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -193,12 +197,12 @@ nodes {
   shadow_alpha: 1.0
   template_node_child: false
   text_leading: 1.0
-  text_tracking: 0.0
+  text_tracking: 0.1
 }
 nodes {
   position {
-    x: 1040.0
-    y: 1350.0
+    x: 780.0
+    y: 1500.0
     z: 0.0
     w: 1.0
   }
@@ -229,7 +233,7 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "0"
-  font: "font_medium"
+  font: "font_big"
   id: "player2Points_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -253,6 +257,130 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.1
+}
+nodes {
+  position {
+    x: 140.0
+    y: 1645.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.4
+    y: 0.4
+    z: 0.4
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Player 1"
+  font: "font_small"
+  id: "player1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 935.0
+    y: 1645.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.4
+    y: 0.4
+    z: 0.4
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Player 2"
+  font: "font_small"
+  id: "player2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
