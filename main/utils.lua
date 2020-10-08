@@ -26,7 +26,7 @@ function M.createOrb(tile, orbType, time, easing)
 			easing = go.EASING_OUTELASTIC
 		end
 		go.set_scale(0.01, orb)
-		go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, 1, easing, time, 0)
+		go.animate(orb, "scale", go.PLAYBACK_ONCE_FORWARD, CO.ORB_SCALE, easing, time, 0)
 	end
 	return orb
 end
@@ -35,7 +35,7 @@ local function anim_changeOrbType_end(self, orb, property)
 	local orbType = ST.get(ST.url2key(orb) .. "orbType")
 	local callback = ST.get(ST.url2key(orb) .. "callback")
 	sprite.play_flipbook(orb, CO.ORBS[orbType])
-	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTELASTIC, 0.5, 0, callback)
+	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, CO.ORB_SCALE, go.EASING_OUTELASTIC, 0.5, 0, callback)
 	if(orbType == CO.FREEZED) then
 		msg.post("controller:/controller", CO.SOUND_FREEZE)
 	end

@@ -1,10 +1,11 @@
 local M = {}
 
 -- player1, player2, freezed as defined by the following constants
-M.ORBS = {hash("red_orb"), hash("blue_orb"), hash("white_orb")}
+M.ORBS = {hash("Orb_01"), hash("Orb_05"), hash("Orb_00")}
 M.PLAYER1 = 1
 M.PLAYER2 = 2
 M.FREEZED = 3
+M.ORB_SCALE = 0.40
 
 M.TILE_W = 72
 M.TILE_H = 72
