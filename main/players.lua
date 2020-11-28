@@ -4,9 +4,17 @@ local CO = require "main.constants"
 local UT = require "main.utils"
 
 local players = { 
-	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN, points=0 }, 
-	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN, points=0 }
+	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN, points=0, color=2 }, 
+	{ glyph={}, sprites={}, type=CO.SETTINGS_PLAYER_TYPE_HUMAN, points=0, color=6 }
 }
+
+function M.setColor(player, color)
+	players[player].color = color
+end
+
+function M.getColor(player)
+	return players[player].color
+end
 
 function M.setPoints(player, points)
 	players[player].points = points
@@ -41,7 +49,7 @@ function M.setGlyph(player, glyph)
 		UT.deleteOrb(players[player].sprites[i])
 		players[player].sprites[i] = nil
 		if(glyph[i] == 1) then
-			players[player].sprites[i] = UT.createOrb(tile, player, 0.5)
+			players[player].sprites[i] = UT.createOrb(tile, M.getColor(player), 0.5)
 		end
 	end
 	players[player].glyph = glyph

@@ -183,6 +183,7 @@ local function checkAndSwapFlow()
 		FL.until_true(checkingGlyphsCompleted)
 	end
 	MA.setCurrentPlayer(MA.getNextPlayer())
+	BO.setCurrentPlayerOrb(MA.getCurrentPlayer())
 	MA.saveGame()
 	if(checkEndGame()) then
 		handleEndGame()
@@ -228,6 +229,7 @@ function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_NEWGAME)) then
 		UT.log("new game")
 		MA.newMatch()
+		BO.setCurrentPlayerOrb(MA.getCurrentPlayer())
 		if(MA.getPlayers().getType(MA.getCurrentPlayer()) ~= CO.SETTINGS_PLAYER_TYPE_HUMAN) then
 			FL.start(executeAIFlow)
 		end
@@ -235,6 +237,7 @@ function on_message(self, message_id, message, sender)
 	if(message_id == hash(CO.MESSAGE_RESUMEGAME)) then
 		UT.log("resume game")
 		MA.loadGame()
+		BO.setCurrentPlayerOrb(MA.getCurrentPlayer())
 		msg.post("game:/gui#gui_ingame", CO.MESSAGE_UPDATESCORE)
 		if(checkEndGame()) then
 			handleEndGame()

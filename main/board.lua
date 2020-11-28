@@ -3,6 +3,7 @@ local M = {}
 local CO = require "main.constants"
 local UT = require "main.utils"
 local ST = require "main.storage"
+local PL = require "main.players"
 
 local board = {sprites={}, values={}}
 
@@ -105,7 +106,7 @@ function M.scanBoard(player, glyph)
 end
 
 function M.setCell(tile, player)
-	local orb = UT.createOrb(tile, player, 0.5)
+	local orb = UT.createOrb(tile, PL.getColor(player), 0.5)
 	local cellPos = M.getCellIndexInBoard(tile)
 	board.sprites[cellPos] = orb
 	board.values[cellPos] = player
@@ -114,7 +115,7 @@ end
 function M.freezeCell(tile, delay, callback)
 	local cellPos = M.getCellIndexInBoard(tile)
 	local orb = board.sprites[cellPos]
-	UT.changeOrbType(orb, CO.FREEZED, delay, callback)
+	UT.changeOrbType(orb, CO.FREEZED_ORB, delay, callback)
 	board.values[cellPos] = CO.FREEZED	
 end
 
@@ -176,7 +177,7 @@ function M.swapBoard(endCallback)
 				callback = endCallback
 			end
 			if(newValue ~= nil) then
-				UT.changeOrbType(orb, newValue, 0, callback)
+				UT.changeOrbType(orb, PL.getColor(newValue), 0, callback)
 				board.values[cellPos] = newValue
 			end
 		end
@@ -289,6 +290,11 @@ function M.setBoardValues(values)
 			end
 		end
 	end
+end
+
+function M.setCurrentPlayerOrb(player)
+	sprite.play_flipbook("game:/currentPlayerFg", CO.ORBS[PL.getColor(player)])
+	sprite.play_flipbook("game:/currentPlayerBg", CO.ORBS[PL.getColor(player)])
 end
 
 return M

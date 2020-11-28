@@ -22,7 +22,7 @@ function M.newMatch()
 	M.resetState()
 	M.deleteGame()
 	M.newGlyph(CO.PLAYER1)
-	M.newGlyph(CO.PLAYER2)
+	M.newGlyph(CO.PLAYER2)	
 end
 
 function M.getNextPlayer()
