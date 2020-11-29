@@ -293,8 +293,8 @@ function M.setBoardValues(values)
 end
 
 function M.setCurrentPlayerOrb(player)
-	sprite.play_flipbook("game:/currentPlayerFg", CO.ORBS[PL.getColor(player)])
-	sprite.play_flipbook("game:/currentPlayerBg", CO.ORBS[PL.getColor(player)])
+	sprite.play_flipbook("game:/currentPlayerOrb", CO.ORBS[PL.getColor(player)])
+	sprite.play_flipbook("game:/currentPlayerHalo", CO.ORBS[PL.getColor(player)])
 end
 
 return M

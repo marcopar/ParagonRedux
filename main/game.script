@@ -176,14 +176,16 @@ end
 local function checkAndSwapFlow()
 	checkMatchingGlyphs()
 	FL.until_true(checkingGlyphsCompleted)
+	nextPlayer = MA.getNextPlayer()
+	-- set before swapping to avoid delay
+	BO.setCurrentPlayerOrb(nextPlayer)
 	if(MA.isSwapTriggered()) then
 		swapBoard()
 		FL.until_true(isSwapCompleted)
 		checkMatchingGlyphs()
 		FL.until_true(checkingGlyphsCompleted)
 	end
-	MA.setCurrentPlayer(MA.getNextPlayer())
-	BO.setCurrentPlayerOrb(MA.getCurrentPlayer())
+	MA.setCurrentPlayer(nextPlayer)
 	MA.saveGame()
 	if(checkEndGame()) then
 		handleEndGame()
