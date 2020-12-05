@@ -36,7 +36,7 @@ local function anim_changeOrbType_end(self, orb, property)
 	local callback = ST.get(ST.url2key(orb) .. "callback")
 	sprite.play_flipbook(orb, CO.ORBS[orbType])
 	go.animate(orb, property, go.PLAYBACK_ONCE_FORWARD, CO.ORB_SCALE, go.EASING_OUTELASTIC, 0.5, 0, callback)
-	if(orbType == CO.FREEZED) then
+	if(orbType == CO.FREEZED_ORB) then
 		msg.post("controller:/controller", CO.SOUND_FREEZE)
 	end
 end
