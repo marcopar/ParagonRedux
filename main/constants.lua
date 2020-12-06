@@ -4,6 +4,8 @@ M.ORBS = {hash("Orb_00"), hash("Orb_01"), hash("Orb_02"), hash("Orb_03"),
 hash("Orb_04"), hash("Orb_05"), hash("Orb_06") }
 M.ORB_SCALE = 0.40
 M.FREEZED_ORB = 1
+M.ORBS_ATLAS_NAME = "orb"
+M.ORBS_TEXTURE_NAME = {"Orb_00", "Orb_01", "Orb_02", "Orb_03", "Orb_04", "Orb_05", "Orb_06"}
 
 -- board values
 M.PLAYER1 = 1
@@ -55,6 +57,8 @@ M.GUI_MARATHON = "marathon"
 M.GUI_MAINMENU = "mainmenu"
 M.GUI_PLAYER1TYPE = "player1"
 M.GUI_PLAYER2TYPE = "player2"
+M.GUI_PLAYER1COLOR = "player1color"
+M.GUI_PLAYER2COLOR = "player2color"
 M.GUI_TEXT = "text"
 M.GUI_OK = "ok"
 M.GUI_CANCEL = "cancel"

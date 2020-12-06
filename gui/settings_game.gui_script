@@ -18,6 +18,18 @@ local function cyclePlayerTypeValue(value)
 	return CO.SETTINGS_PLAYER_TYPES[newidx]
 end
 
+local function cyclePlayerColorValue(value, otherPlayerValue)
+	local newidx =  (value % table.getn(CO.ORBS_TEXTURE_NAME)) + 1
+	-- skip the white orb
+	if(newidx == 1) then
+		newidx = 2
+	end
+	if(newidx == otherPlayerValue) then
+		newidx = (newidx % table.getn(CO.ORBS_TEXTURE_NAME)) + 1
+	end
+	return newidx
+end
+
 local function getBooleanTextValue(value)
 	local text
 	if(value) then
@@ -40,6 +52,11 @@ function init(self)
 	gui.set_text(text, formatText("PLAYER 1 ", MA.getPlayers().getType(CO.PLAYER1)))
 	text = gui.get_node(CO.GUI_PLAYER2TYPE .. "_text")
 	gui.set_text(text, formatText("PLAYER 2 ",  MA.getPlayers().getType(CO.PLAYER2)))
+
+	local box = gui.get_node(CO.GUI_PLAYER1COLOR .. "_orb")	
+	gui.play_flipbook(box, CO.ORBS_TEXTURE_NAME[MA.getPlayers().getColor(CO.PLAYER1)])
+	box = gui.get_node(CO.GUI_PLAYER2COLOR .. "_orb")
+	gui.play_flipbook(box, CO.ORBS_TEXTURE_NAME[MA.getPlayers().getColor(CO.PLAYER2)])
 end
 
 function final(self)
@@ -101,6 +118,20 @@ function on_input(self, action_id, action)
 			MA.getPlayers().setType(CO.PLAYER2, newValue)
 			local text = gui.get_node(CO.GUI_PLAYER2TYPE .. "_text")
 			gui.set_text(text, formatText("PLAYER 2 ", MA.getPlayers().getType(CO.PLAYER2)))
+		end)
+		GO.button(CO.GUI_PLAYER1COLOR, action_id, action, function(button)
+			msg.post("controller:/controller", CO.SOUND_MENU)
+			local newValue = cyclePlayerColorValue(MA.getPlayers().getColor(CO.PLAYER1), MA.getPlayers().getColor(CO.PLAYER2))
+			MA.getPlayers().setColor(CO.PLAYER1, newValue)
+			local box = gui.get_node(CO.GUI_PLAYER1COLOR .. "_orb")	
+			gui.play_flipbook(box, CO.ORBS_TEXTURE_NAME[MA.getPlayers().getColor(CO.PLAYER1)])
+		end)
+		GO.button(CO.GUI_PLAYER2COLOR, action_id, action, function(button)
+			msg.post("controller:/controller", CO.SOUND_MENU)
+			local newValue = cyclePlayerColorValue(MA.getPlayers().getColor(CO.PLAYER2), MA.getPlayers().getColor(CO.PLAYER1))
+			MA.getPlayers().setColor(CO.PLAYER2, newValue)
+			local box = gui.get_node(CO.GUI_PLAYER2COLOR .. "_orb")	
+			gui.play_flipbook(box, CO.ORBS_TEXTURE_NAME[MA.getPlayers().getColor(CO.PLAYER2)])
 		end)
 	end)
 	return group.consumed
