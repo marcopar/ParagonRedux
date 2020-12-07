@@ -100,7 +100,8 @@ function M.getState()
 		currentPlayer=nil, lastSwapAt=nil,
 		board=nil, player1Glyph=nil, player2Glyph=nil,
 		player1Type=nil, player2Type=nil, 
-		player1Points=0, player2Points=0
+		player1Points=0, player2Points=0,
+		player1Color=nil, player2Type=nil
 	}
 	state.swapEvery = swapEvery
 	state.marathon = marathon
@@ -112,6 +113,8 @@ function M.getState()
 	state.player2Glyph = PL.getGlyph(CO.PLAYER2)
 	state.player1Points = PL.getPoints(CO.PLAYER1)
 	state.player2Points = PL.getPoints(CO.PLAYER2)
+	state.player1Color = PL.getColor(CO.PLAYER1)
+	state.player2Color = PL.getColor(CO.PLAYER2)
 	state.board = BO.getBoardValues()
 	return state
 end
@@ -141,6 +144,12 @@ function M.setState(state)
 	if(state.player2Points ~= nil) then
 		PL.setPoints(CO.PLAYER2, state.player2Points)
 	end
+	if(state.player1Color ~= nil) then
+		PL.setColor(CO.PLAYER1, state.player1Color)
+	end
+	if(state.player2Color ~= nil) then
+		PL.setColor(CO.PLAYER2, state.player2Color)
+	end	
 	if(state.player1Glyph ~= nil) then
 		PL.setGlyph(CO.PLAYER1, state.player1Glyph)
 	end
