@@ -1,13 +1,7 @@
-# Welcome to Defold
+# Paragon
 
-This project was created from the "empty" project template.
+Remake of the Amiga classic Paragon made by Peace/Testaware (https://testaware.wordpress.com/amiga/)
 
-The settings in ["game.project"](defold://open?path=/game.project) are all the default. A bootstrap empty ["main.collection"](defold://open?path=/main/main.collection) is included.
+Made with the Defold engine
 
-Check out [the documentation pages](https://defold.com/learn) for examples, tutorials, manuals and API docs.
-
-If you run into trouble, help is available in [our forum](https://forum.defold.com).
-
-Happy Defolding!
-
----
+#madewithdefold
