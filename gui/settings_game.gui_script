@@ -26,6 +26,9 @@ local function cyclePlayerColorValue(value, otherPlayerValue)
 	end
 	if(newidx == otherPlayerValue) then
 		newidx = (newidx % table.getn(CO.ORBS_TEXTURE_NAME)) + 1
+		if(newidx == 1) then
+			newidx = 2
+		end
 	end
 	return newidx
 end

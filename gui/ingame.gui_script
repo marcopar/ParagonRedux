@@ -33,7 +33,7 @@ end
 
 function on_input(self, action_id, action)
 	if(ST.getDefault(CO.STORAGE_INPUT_DISABLED, false)) then
-		return true
+		return false
 	end
 	local group = GO.group("group1", function()
 		GO.button(CO.GUI_MAINMENU, action_id, action, function(button)
