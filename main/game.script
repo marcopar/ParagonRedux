@@ -12,7 +12,6 @@ local PL = require "main.players"
 local checkingSingleGlyph = false
 local swapping = false
 local checkingGlyphs = false
-local inputDisabled = false
 local aiRunning = false
 local gameEnded = false
 
@@ -129,7 +128,8 @@ local function handleEndGame()
 	end
 	MO.show(PO.INFORMATION_POPUP, {}, 
 		{text=text, okCallback=function()
-			MO.back()
+			MO.show(hash(CO.SCREEN_MAINMENU))
+			MA.deleteGame()
 		end}
 	)
 end
@@ -151,8 +151,12 @@ local function swapBoard()
 	MA.getBoard().swapBoard(swapCompleted)
 end
 
+local function setInputDisabled(value)
+	ST.put(CO.STORAGE_INPUT_DISABLED, value)
+end
+
 local function isInputDisabled()
-	return inputDisabled
+	return ST.getDefault(CO.STORAGE_INPUT_DISABLED, false)
 end
 
 local function checkingGlyphsCompleted()
@@ -194,11 +198,11 @@ local function checkAndSwapFlow()
 			executeAIFlow()
 		end
 	end
-	inputDisabled = false
+	setInputDisabled(false)
 end
 
 local function processPlayerInput(currentPlayer, tile)
-	inputDisabled = true
+	setInputDisabled(true)
 	if(MA.getBoard().isOnBoard(tile)) then
 		local cell = MA.getBoard().getCell(tile)
 		if(cell == nil) then
@@ -211,10 +215,10 @@ local function processPlayerInput(currentPlayer, tile)
 			FL.start(checkAndSwapFlow)
 			BO.scanBoard(currentPlayer, PL.getGlyph(currentPlayer))
 		else
-			inputDisabled = false
+			setInputDisabled(false)
 		end			
 	else
-		inputDisabled = false
+		setInputDisabled(false)
 	end
 end
 

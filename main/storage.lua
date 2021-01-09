@@ -15,6 +15,14 @@ function M.get(key)
 	return value
 end
 
+function M.getDefault(key, default)
+	local value = storage[key]
+	if(value == nil) then
+		value = default
+	end
+	return value
+end
+
 function M.remove(key)
 	storage[key] = nil
 end
