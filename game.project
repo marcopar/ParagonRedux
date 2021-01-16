@@ -22,6 +22,12 @@ max_count = 256
 [android]
 package = eu.flatworld.paragonredux
 version_code = 10000
+app_icon_36x36 = /assets/icons/icon36.png
+app_icon_48x48 = /assets/icons/icon48.png
+app_icon_72x72 = /assets/icons/icon72.png
+app_icon_96x96 = /assets/icons/icon96.png
+app_icon_144x144 = /assets/icons/icon144.png
+app_icon_192x192 = /assets/icons/icon192.png
 
 [html5]
 archive_location_suffix = ?v=1.0.0
