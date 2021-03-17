@@ -3,7 +3,7 @@
 Remake of the Amiga classic Paragon made by Peace/Testaware (https://testaware.wordpress.com/amiga/)
 
 Play at:
-https://marcopar.itch.io/paragon-redux
+https:/flatworld.itch.io/paragon-redux
 
 Made with the Defold engine
 
