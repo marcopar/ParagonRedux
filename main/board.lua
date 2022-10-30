@@ -106,7 +106,14 @@ function M.scanBoard(player, glyph)
 end
 
 function M.setCell(tile, player)
-	local orb = UT.createOrb(tile, PL.getColor(player), 0.5)
+	UT.log("set cell player=" .. player)
+	local color
+	if(player == CO.FREEZED) then
+		color = CO.FREEZED_ORB
+	else
+		color = PL.getColor(player)
+	end
+	local orb = UT.createOrb(tile, color, 0.5)
 	local cellPos = M.getCellIndexInBoard(tile)
 	board.sprites[cellPos] = orb
 	board.values[cellPos] = player

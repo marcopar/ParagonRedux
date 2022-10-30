@@ -12,7 +12,7 @@ high_dpi = 1
 
 [project]
 title = Paragon Redux
-version = 1.0.1
+version = 1.1.0
 publisher = Flatworld
 dependencies#0 = https://github.com/britzl/ludobits/archive/master.zip
 dependencies#1 = https://github.com/britzl/monarch/archive/master.zip
@@ -24,7 +24,7 @@ max_count = 256
 
 [android]
 package = eu.flatworld.paragonredux
-version_code = 10001
+version_code = 10100
 app_icon_36x36 = /assets/icons/icon36.png
 app_icon_48x48 = /assets/icons/icon48.png
 app_icon_72x72 = /assets/icons/icon72.png
