@@ -12,26 +12,27 @@ high_dpi = 1
 
 [project]
 title = Paragon Redux
-version = 1.1.1
+version = 1.1.2
 publisher = Flatworld
+minimum_log_level = 2
 dependencies#0 = https://github.com/britzl/ludobits/archive/master.zip
 dependencies#1 = https://github.com/britzl/monarch/archive/master.zip
-dependencies#2 = https://github.com/britzl/gooey/archive/master.zip
-dependencies#3 = https://github.com/rgrams/rendercam/archive/v1.0.1.zip
+dependencies#2 = https://github.com/rgrams/rendercam/archive/v1.0.1.zip
+dependencies#3 = https://github.com/britzl/gooey/archive/refs/tags/10.5.0.zip
 
 [sprite]
 max_count = 256
 
 [android]
 package = eu.flatworld.paragonredux
-version_code = 10101
+version_code = 10102
 app_icon_36x36 = /assets/icons/icon36.png
 app_icon_48x48 = /assets/icons/icon48.png
 app_icon_72x72 = /assets/icons/icon72.png
 app_icon_96x96 = /assets/icons/icon96.png
 app_icon_144x144 = /assets/icons/icon144.png
 app_icon_192x192 = /assets/icons/icon192.png
-target_sdk_version = 33
+target_sdk_version = 35
 
 [html5]
 archive_location_suffix = ?v=1.0.0
