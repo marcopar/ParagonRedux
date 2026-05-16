@@ -1,6 +1,6 @@
 # Paragon Redux
 
-Remake of the Amiga classic Paragon made by Peace/Testaware (https://testaware.wordpress.com/amiga/)
+Remake of the Amiga classic Paragon made by [Peace/Testaware](https://testaware.wordpress.com/amiga/)
 
 Play at:
 https://flatworld.itch.io/paragon-redux
